@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="web.manifest.json">
+<meta name="theme-color" content="#0088b0">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/broadsheet-1cff474e-3177-4fad-a702-0bddddc7d632/styles.css">
+<script src="_ds/broadsheet-1cff474e-3177-4fad-a702-0bddddc7d632/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:#f3f2f2;font-family:"Source Serif 4",system-ui,sans-serif}
+a{color:#006786;text-decoration:none}a:hover{color:#1186ac}
+.pt-scroll{-webkit-overflow-scrolling:touch}
+.pt-scroll::-webkit-scrollbar{width:0}
+input.input{font-family:"Source Serif 4",system-ui,sans-serif}
+</style>
+</helmet>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div style="height:100%;display:flex;flex-direction:column;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-size:17.5px;overflow:hidden">
+
+<sc-if value="{{ isOnboard }}" hint-placeholder-val="{{ true }}">
+<div class="pt-scroll" style="flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;padding:64px 22px 28px;background:var(--color-bg)">
+  <div style="font:600 12.5px/1 var(--font-heading);letter-spacing:.18em;text-transform:uppercase;color:var(--color-accent-700)">Protocol</div>
+  <div style="height:2px;background:var(--color-text);margin:14px 0 22px"></div>
+  <h1 style="margin:0;font:600 46px/1.1 var(--font-heading);letter-spacing:-0.02em;text-wrap:pretty">Research design,<br>one card at a time.</h1>
+  <p style="margin:16px 0 0;font-size:17.5px;line-height:1.5;color:var(--color-neutral-700);max-width:300px">Twelve concept modules, a sample size calculator, and a protocol you can actually submit. Built for the first project you've ever run.</p>
+  <div style="height:1px;background:var(--color-neutral-300);margin:26px 0 16px"></div>
+  <div style="font:600 12.5px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600);margin-bottom:12px">Where are you right now?</div>
+  <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid var(--color-neutral-300)">
+    <sc-for list="{{ roles }}" as="role" hint-placeholder-count="4">
+      <div onClick="{{ role.pick }}" style="display:flex;align-items:center;gap:12px;min-height:56px;padding:10px 2px;border-bottom:1px solid var(--color-neutral-300);cursor:pointer" style-hover="background:var(--color-accent-100)">
+        <div style="width:22px;height:22px;border:2px solid var(--color-text);flex:none;display:flex;align-items:center;justify-content:center;background:{{ role.fill }}"><div style="width:8px;height:8px;background:{{ role.dot }}"></div></div>
+        <div style="flex:1">
+          <div style="font:600 17.5px/1.2 var(--font-heading)">{{ role.label }}</div>
+          <div style="font-size:14.5px;color:var(--color-neutral-600);margin-top:2px">{{ role.note }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="flex:1"></div>
+  <div onClick="{{ start }}" class="btn btn-primary" style="min-height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;cursor:pointer;font:600 17.5px/1 var(--font-heading)"><span>Start with Module 01</span><span style="font-size:20.5px">→</span></div>
+  <div style="text-align:left;font-size:13px;color:var(--color-neutral-600);margin-top:12px">No account needed. Nothing leaves your phone.</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ notOnboard }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;display:flex;flex-direction:column;min-height:0">
+
+  <div style="flex:none;padding:52px 18px 0;background:var(--color-bg)">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+      <div style="min-width:0">
+        <div style="font:600 12px/1 var(--font-heading);letter-spacing:.16em;text-transform:uppercase;color:var(--color-accent-700)">{{ headerKicker }}</div>
+        <div style="font:600 30px/1.05 var(--font-heading);letter-spacing:-0.015em;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ headerTitle }}</div>
+      </div>
+      <sc-if value="{{ showGame }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;gap:6px;flex:none;padding-bottom:3px">
+          <div style="display:flex;align-items:center;gap:4px;padding:4px 7px;background:var(--color-accent);color:#fff;font:600 12.5px/1 var(--font-heading)"><span style="font-size:14px">▲</span>{{ streak }}d</div>
+          <div style="display:flex;align-items:center;gap:4px;padding:4px 7px;border:1.5px solid var(--color-text);font:600 12.5px/1 var(--font-heading)">{{ xp }} XP</div>
+        </div>
+      </sc-if>
+    </div>
+    <div style="height:2px;background:var(--color-text);margin-top:12px"></div>
+  </div>
+
+  <div class="pt-scroll" style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden">
+
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:0 0 24px">
+      <sc-if value="{{ showGame }}">
+        <div style="padding:16px 18px 18px;border-bottom:1px solid var(--color-neutral-300);background:var(--color-neutral-100)">
+          <div style="display:flex;justify-content:space-between;align-items:baseline">
+            <div style="font:600 12px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600)">Level {{ level }} · {{ levelName }}</div>
+            <div style="font-size:13px;color:var(--color-neutral-600)">{{ doneCount }}/12 modules</div>
+          </div>
+          <div style="display:flex;gap:3px;margin-top:10px;height:10px">
+            <sc-for list="{{ modules }}" as="m" hint-placeholder-count="12">
+              <div style="flex:1;background:{{ m.barFill }};border:1px solid var(--color-text)"></div>
+            </sc-for>
+          </div>
+          <div style="font-size:14.5px;color:var(--color-neutral-700);margin-top:10px">{{ gameLine }}</div>
+        </div>
+      </sc-if>
+
+      <div onClick="{{ openNext }}" style="padding:16px 18px;border-bottom:2px solid var(--color-text);cursor:pointer;display:flex;gap:14px;align-items:center" style-hover="background:var(--color-accent-100)">
+        <div style="font:600 39px/1 var(--font-heading);color:var(--color-accent);flex:none">{{ nextNum }}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600)">Continue</div>
+          <div style="font:600 19.5px/1.15 var(--font-heading);margin-top:4px">{{ nextTitle }}</div>
+          <div style="font-size:14.5px;color:var(--color-neutral-600);margin-top:3px">{{ nextMeta }}</div>
+        </div>
+        <div style="font-size:23px;flex:none">→</div>
+      </div>
+
+      <sc-if value="{{ homeIsIndex }}">
+        <div>
+          <sc-for list="{{ modules }}" as="m" hint-placeholder-count="12">
+            <div onClick="{{ m.open }}" style="display:flex;gap:14px;align-items:baseline;padding:13px 18px;border-bottom:1px solid var(--color-neutral-300);cursor:pointer" style-hover="background:var(--color-accent-100)">
+              <div style="font:600 15px/1 var(--font-heading);color:var(--color-neutral-500);width:22px;flex:none">{{ m.num }}</div>
+              <div style="flex:1;min-width:0">
+                <div style="font:600 17.5px/1.2 var(--font-heading);color:{{ m.titleColor }}">{{ m.title }}</div>
+                <div style="font-size:14px;color:var(--color-neutral-600);margin-top:3px">{{ m.kicker }} · {{ m.mins }} min</div>
+              </div>
+              <div style="flex:none;font:600 11.5px/1 var(--font-heading);letter-spacing:.1em;text-transform:uppercase;color:{{ m.stateColor }};padding:4px 6px;border:1px solid {{ m.stateColor }}">{{ m.stateLabel }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ homeIsGrid }}">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--color-neutral-300);border-bottom:1px solid var(--color-neutral-300)">
+          <sc-for list="{{ modules }}" as="m" hint-placeholder-count="12">
+            <div onClick="{{ m.open }}" style="background:{{ m.cellBg }};padding:14px 12px 12px;min-height:112px;display:flex;flex-direction:column;cursor:pointer" style-hover="background:var(--color-accent-100)">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div style="font:600 25.5px/1 var(--font-heading);color:{{ m.cellNum }}">{{ m.num }}</div>
+                <div style="font-size:15px;color:{{ m.stateColor }}">{{ m.tick }}</div>
+              </div>
+              <div style="font:600 15.5px/1.2 var(--font-heading);margin-top:14px;text-wrap:pretty">{{ m.title }}</div>
+              <div style="flex:1"></div>
+              <div style="font-size:12.5px;color:var(--color-neutral-600);margin-top:8px">{{ m.mins }} min · {{ m.cardCount }} cards</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ homeIsTrack }}">
+        <div>
+          <sc-for list="{{ tracks }}" as="t" hint-placeholder-count="3">
+            <div>
+              <div style="padding:16px 18px 8px;display:flex;align-items:baseline;gap:8px">
+                <div style="font:600 12.5px/1 var(--font-heading);letter-spacing:.16em;text-transform:uppercase;color:var(--color-accent-700)">{{ t.name }}</div>
+                <div style="flex:1;height:1px;background:var(--color-neutral-300)"></div>
+                <div style="font-size:13px;color:var(--color-neutral-600)">{{ t.progress }}</div>
+              </div>
+              <div style="font-size:14.5px;color:var(--color-neutral-700);padding:0 18px 10px">{{ t.blurb }}</div>
+              <sc-for list="{{ t.items }}" as="m" hint-placeholder-count="4">
+                <div onClick="{{ m.open }}" style="display:flex;gap:12px;align-items:center;padding:12px 18px;border-top:1px solid var(--color-neutral-300);cursor:pointer" style-hover="background:var(--color-accent-100)">
+                  <div style="width:26px;height:26px;flex:none;border:1.5px solid var(--color-text);display:flex;align-items:center;justify-content:center;font:600 12.5px/1 var(--font-heading);background:{{ m.cellBg }};color:{{ m.cellNum }}">{{ m.num }}</div>
+                  <div style="flex:1;font:600 16.5px/1.2 var(--font-heading);color:{{ m.titleColor }}">{{ m.title }}</div>
+                  <div style="font-size:14px;color:var(--color-neutral-600)">{{ m.mins }}m</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isModule }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-direction:column;min-height:100%">
+      <div style="padding:12px 18px 10px;border-bottom:1px solid var(--color-neutral-300);display:flex;align-items:center;gap:10px">
+        <div onClick="{{ backHome }}" style="font:600 14.5px/1 var(--font-heading);cursor:pointer;color:var(--color-accent-700);min-height:24px;display:flex;align-items:center">← Modules</div>
+        <div style="flex:1"></div>
+        <div style="display:flex;gap:3px">
+          <sc-for list="{{ cards }}" as="c" hint-placeholder-count="4">
+            <div style="width:16px;height:4px;background:{{ c.tickFill }}"></div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="padding:14px 18px;background:var(--color-neutral-100);border-bottom:1px solid var(--color-neutral-300)">
+        <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600)">The case you're following</div>
+        <div style="font-size:15px;line-height:1.45;margin-top:6px;color:var(--color-neutral-800);text-wrap:pretty">{{ caseText }}</div>
+      </div>
+
+      <sc-if value="{{ lessonIsCards }}">
+        <div style="flex:1;display:flex;flex-direction:column;min-height:0">
+          <div style="overflow:hidden;flex:1">
+            <div style="display:flex;width:100%;height:100%;transition:transform .32s cubic-bezier(.22,.61,.36,1);transform:{{ trackShift }}">
+              <sc-for list="{{ cards }}" as="c" hint-placeholder-count="4">
+                <div style="width:100%;flex:none;padding:20px 18px 24px;display:flex;flex-direction:column">
+                  <div style="display:flex;align-items:baseline;gap:8px">
+                    <div style="font:600 12px/1 var(--font-heading);letter-spacing:.16em;text-transform:uppercase;color:var(--color-accent-700)">{{ c.kicker }}</div>
+                    <div style="flex:1;height:1px;background:var(--color-neutral-300)"></div>
+                    <div style="font-size:12.5px;color:var(--color-neutral-500)">{{ c.pos }}</div>
+                  </div>
+                  <h2 style="margin:14px 0 0;font:600 28.5px/1.15 var(--font-heading);letter-spacing:-0.015em;text-wrap:pretty">{{ c.title }}</h2>
+                  <p style="margin:12px 0 0;font-size:17.5px;line-height:1.5;color:var(--color-neutral-800);text-wrap:pretty">{{ c.body }}</p>
+                  <sc-if value="{{ c.hasNote }}">
+                    <div style="margin-top:16px;border-left:3px solid var(--color-accent);padding:2px 0 2px 12px">
+                      <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">{{ c.noteLabel }}</div>
+                      <div style="font-size:15.5px;line-height:1.45;margin-top:5px;color:var(--color-neutral-800)">{{ c.note }}</div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ c.isDiagram }}">
+                    <div style="margin-top:18px;border-top:2px solid var(--color-text);padding-top:14px">
+                      <div style="display:flex;gap:8px;flex-wrap:wrap">
+                        <sc-for list="{{ c.chips }}" as="ch" hint-placeholder-count="3">
+                          <div onClick="{{ ch.pick }}" style="padding:7px 12px;border:1.5px solid {{ ch.border }};background:{{ ch.bg }};color:{{ ch.color }};cursor:pointer;font:600 14.5px/1 var(--font-heading);min-height:32px;display:flex;align-items:center">{{ ch.label }}</div>
+                        </sc-for>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:6px;margin-top:16px;flex-wrap:wrap">
+                        <sc-for list="{{ c.boxes }}" as="b" hint-placeholder-count="3">
+                          <div style="display:flex;align-items:center;gap:6px">
+                            <div style="padding:10px 12px;border:1.5px solid {{ b.border }};background:{{ b.bg }};color:{{ b.color }};min-width:88px;text-align:center">
+                              <div style="font:600 14.5px/1.2 var(--font-heading)">{{ b.text }}</div>
+                              <sc-if value="{{ b.sub }}"><div style="font-size:12.5px;opacity:.75;margin-top:3px">{{ b.sub }}</div></sc-if>
+                            </div>
+                            <sc-if value="{{ b.showArrow }}"><div style="font-size:18.5px;color:var(--color-neutral-500)">→</div></sc-if>
+                          </div>
+                        </sc-for>
+                      </div>
+                      <div style="margin-top:12px;font-size:15.5px;line-height:1.5;color:var(--color-neutral-800);text-wrap:pretty">{{ c.caption }}</div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ c.hasQuiz }}">
+                    <div style="margin-top:18px;border-top:2px solid var(--color-text);padding-top:14px">
+                      <div style="font:600 16.5px/1.3 var(--font-heading)">{{ c.quizQ }}</div>
+                      <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+                        <sc-for list="{{ c.options }}" as="o" hint-placeholder-count="3">
+                          <div onClick="{{ o.pick }}" style="min-height:46px;display:flex;align-items:center;gap:10px;padding:8px 12px;border:1.5px solid {{ o.border }};background:{{ o.bg }};cursor:pointer;font-size:15.5px;line-height:1.35;color:{{ o.color }}" style-hover="border-color:var(--color-text)">
+                            <div style="font:600 12.5px/1 var(--font-heading);flex:none;width:14px">{{ o.letter }}</div>
+                            <div style="flex:1">{{ o.text }}</div>
+                            <div style="flex:none;font-size:15px">{{ o.mark }}</div>
+                          </div>
+                        </sc-for>
+                      </div>
+                      <sc-if value="{{ c.answered }}">
+                        <div style="margin-top:12px;font-size:15px;line-height:1.45;padding:10px 12px;background:var(--color-neutral-100);border-left:3px solid var(--color-text)">{{ c.explain }}</div>
+                      </sc-if>
+                    </div>
+                  </sc-if>
+                  <div style="flex:1"></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="flex:none;display:flex;gap:1px;background:var(--color-text);border-top:2px solid var(--color-text)">
+            <div onClick="{{ prevCard }}" style="width:64px;min-height:52px;display:flex;align-items:center;justify-content:center;background:var(--color-bg);cursor:pointer;font-size:20.5px;color:{{ prevColor }}">←</div>
+            <div onClick="{{ nextCard }}" style="flex:1;min-height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:var(--color-accent);color:#fff;cursor:pointer;font:600 17.5px/1 var(--font-heading)" style-hover="background:var(--color-accent-600)"><span>{{ nextLabel }}</span><span style="font-size:20.5px">→</span></div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ lessonIsRead }}">
+        <div style="padding:4px 0 28px">
+          <sc-for list="{{ cards }}" as="c" hint-placeholder-count="4">
+            <div style="padding:18px 18px 20px;border-bottom:1px solid var(--color-neutral-300)">
+              <div style="font:600 12px/1 var(--font-heading);letter-spacing:.16em;text-transform:uppercase;color:var(--color-accent-700)">{{ c.kicker }}</div>
+              <h2 style="margin:10px 0 0;font:600 23px/1.12 var(--font-heading);text-wrap:pretty">{{ c.title }}</h2>
+              <p style="margin:8px 0 0;font-size:16.5px;line-height:1.5;color:var(--color-neutral-800);text-wrap:pretty">{{ c.body }}</p>
+              <sc-if value="{{ c.hasNote }}">
+                <div style="margin-top:12px;border-left:3px solid var(--color-accent);padding:2px 0 2px 12px">
+                  <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">{{ c.noteLabel }}</div>
+                  <div style="font-size:15px;line-height:1.45;margin-top:5px;color:var(--color-neutral-800)">{{ c.note }}</div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ c.isDiagram }}">
+                <div style="margin-top:12px;border-top:1px solid var(--color-neutral-300);padding-top:14px">
+                  <div style="display:flex;gap:8px;flex-wrap:wrap">
+                    <sc-for list="{{ c.chips }}" as="ch" hint-placeholder-count="3">
+                      <div onClick="{{ ch.pick }}" style="padding:7px 12px;border:1.5px solid {{ ch.border }};background:{{ ch.bg }};color:{{ ch.color }};cursor:pointer;font:600 14.5px/1 var(--font-heading);min-height:32px;display:flex;align-items:center">{{ ch.label }}</div>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px;margin-top:14px;flex-wrap:wrap">
+                    <sc-for list="{{ c.boxes }}" as="b" hint-placeholder-count="3">
+                      <div style="display:flex;align-items:center;gap:6px">
+                        <div style="padding:9px 11px;border:1.5px solid {{ b.border }};background:{{ b.bg }};color:{{ b.color }};min-width:80px;text-align:center">
+                          <div style="font:600 14px/1.2 var(--font-heading)">{{ b.text }}</div>
+                          <sc-if value="{{ b.sub }}"><div style="font-size:12px;opacity:.75;margin-top:2px">{{ b.sub }}</div></sc-if>
+                        </div>
+                        <sc-if value="{{ b.showArrow }}"><div style="font-size:17.5px;color:var(--color-neutral-500)">→</div></sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="margin-top:11px;font-size:15px;line-height:1.5;color:var(--color-neutral-800);text-wrap:pretty">{{ c.caption }}</div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+          <div onClick="{{ finishModule }}" style="margin:18px;min-height:52px;background:var(--color-accent);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 16px;cursor:pointer;font:600 17.5px/1 var(--font-heading)"><span>Mark module complete</span><span style="font-size:20.5px">✓</span></div>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isCalc }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:0 0 28px">
+      <div style="padding:14px 18px 12px;border-bottom:1px solid var(--color-neutral-300)">
+        <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600);margin-bottom:10px">What are you estimating?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--color-neutral-300);border:1px solid var(--color-neutral-300)">
+          <sc-for list="{{ calcTypes }}" as="t" hint-placeholder-count="7">
+            <div onClick="{{ t.pick }}" style="background:{{ t.bg }};color:{{ t.color }};min-height:52px;padding:8px 10px;display:flex;flex-direction:column;justify-content:center;cursor:pointer;grid-column:{{ t.span }}" style-hover="background:var(--color-accent-100)">
+              <div style="font:600 15px/1.15 var(--font-heading)">{{ t.label }}</div>
+              <div style="font-size:12px;margin-top:3px;opacity:.75">{{ t.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <sc-if value="{{ calcIsStepper }}">
+        <div style="padding:16px 18px 18px;border-bottom:1px solid var(--color-neutral-300)">
+          <div style="display:flex;gap:3px;margin-bottom:14px">
+            <sc-for list="{{ fields }}" as="f" hint-placeholder-count="4">
+              <div style="flex:1;height:4px;background:{{ f.tickFill }}"></div>
+            </sc-for>
+          </div>
+          <div style="font-size:13px;color:var(--color-neutral-600)">Step {{ stepPos }}</div>
+          <h2 style="margin:6px 0 0;font:600 26.5px/1.1 var(--font-heading);text-wrap:pretty">{{ stepField.label }}</h2>
+          <div style="font-size:15px;line-height:1.45;color:var(--color-neutral-700);margin-top:8px;text-wrap:pretty">{{ stepField.hint }}</div>
+          <div style="display:flex;align-items:baseline;gap:10px;margin-top:16px;border-bottom:2px solid var(--color-text);padding-bottom:6px">
+            <input class="input" type="number" step="any" value="{{ stepField.value }}" onChange="{{ stepField.set }}" style="flex:1;border:none;background:transparent;font:600 39px/1 var(--font-heading);padding:0;color:var(--color-text);min-width:0">
+            <div style="font:600 16px/1 var(--font-heading);color:var(--color-neutral-600);flex:none">{{ stepField.unit }}</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <sc-for list="{{ stepField.presets }}" as="p" hint-placeholder-count="3">
+              <div onClick="{{ p.pick }}" style="padding:7px 11px;border:1.5px solid var(--color-text);cursor:pointer;font:600 14.5px/1 var(--font-heading);min-height:32px;display:flex;align-items:center;background:{{ p.bg }};color:{{ p.color }}">{{ p.label }}</div>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:1px;margin-top:20px;background:var(--color-text)">
+            <div onClick="{{ prevStep }}" style="width:60px;min-height:46px;display:flex;align-items:center;justify-content:center;background:var(--color-bg);cursor:pointer;color:{{ prevStepColor }};font-size:19.5px">←</div>
+            <div onClick="{{ nextStep }}" style="flex:1;min-height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:var(--color-accent);color:#fff;cursor:pointer;font:600 16.5px/1 var(--font-heading)" style-hover="background:var(--color-accent-600)"><span>{{ nextStepLabel }}</span><span style="font-size:19.5px">→</span></div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ calcIsForm }}">
+        <div style="padding:14px 18px 6px">
+          <sc-for list="{{ fields }}" as="f" hint-placeholder-count="4">
+            <div style="padding:10px 0 12px;border-bottom:1px solid var(--color-neutral-300)">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="flex:1;min-width:0">
+                  <div style="font:600 16px/1.2 var(--font-heading)">{{ f.label }}</div>
+                  <div style="font-size:13px;color:var(--color-neutral-600);margin-top:3px;text-wrap:pretty">{{ f.hint }}</div>
+                </div>
+                <div style="flex:none;display:flex;align-items:baseline;gap:5px;border-bottom:2px solid var(--color-text);min-width:96px;justify-content:flex-end">
+                  <input class="input" type="number" step="any" value="{{ f.value }}" onChange="{{ f.set }}" style="width:64px;border:none;background:transparent;font:600 22px/1.2 var(--font-heading);padding:0 0 3px;text-align:right;color:var(--color-text)">
+                  <div style="font-size:13px;color:var(--color-neutral-600);padding-bottom:5px">{{ f.unit }}</div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <div style="padding:14px 18px 16px;border-top:1px solid var(--color-neutral-300);border-bottom:1px solid var(--color-neutral-300);background:var(--color-neutral-100)">
+        <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600)">Adjustments</div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <div onClick="{{ toggleDropout }}" style="flex:1;padding:10px;border:1.5px solid {{ dropBorder }};background:{{ dropBg }};color:{{ dropColor }};cursor:pointer;min-height:44px">
+            <div style="font:600 14.5px/1.1 var(--font-heading)">Dropout / non-response</div>
+            <div style="font-size:12.5px;margin-top:3px;opacity:.8">{{ dropState }}</div>
+          </div>
+          <div onClick="{{ toggleFinite }}" style="flex:1;padding:10px;border:1.5px solid {{ finBorder }};background:{{ finBg }};color:{{ finColor }};cursor:pointer;min-height:44px">
+            <div style="font:600 14.5px/1.1 var(--font-heading)">Finite population</div>
+            <div style="font-size:12.5px;margin-top:3px;opacity:.8">{{ finState }}</div>
+          </div>
+        </div>
+        <sc-if value="{{ anyAdjust }}">
+          <div style="margin-top:12px">
+            <sc-for list="{{ adjustFields }}" as="f" hint-placeholder-count="1">
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--color-neutral-300)">
+                <div style="flex:1;font-size:15px">{{ f.label }}</div>
+                <input class="input" type="number" step="any" value="{{ f.value }}" onChange="{{ f.set }}" style="width:76px;border:none;border-bottom:2px solid var(--color-text);background:transparent;font:600 18.5px/1.2 var(--font-heading);text-align:right;padding:0 0 3px">
+                <div style="font-size:13px;color:var(--color-neutral-600);width:20px">{{ f.unit }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="padding:18px;background:var(--color-text);color:#fff">
+        <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.16em;text-transform:uppercase;color:var(--color-accent-400)">Sample size required</div>
+        <div style="display:flex;align-items:flex-end;gap:12px;margin-top:10px">
+          <div style="font:600 71.5px/0.9 var(--font-heading);letter-spacing:-0.03em">{{ result.n }}</div>
+          <div style="font-size:15px;line-height:1.3;color:rgba(255,255,255,.7);padding-bottom:8px">{{ result.unitLine }}</div>
+        </div>
+        <sc-if value="{{ result.hasBreakdown }}">
+          <div style="margin-top:14px;border-top:1px solid rgba(255,255,255,.28);padding-top:10px">
+            <sc-for list="{{ result.breakdown }}" as="b" hint-placeholder-count="3">
+              <div style="display:flex;justify-content:space-between;gap:10px;padding:5px 0;font-size:14.5px;color:rgba(255,255,255,.82)">
+                <div>{{ b.label }}</div>
+                <div style="font-weight:700;color:#fff">{{ b.value }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.28);font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.5;color:rgba(255,255,255,.72)">{{ result.formula }}</div>
+      </div>
+
+      <div style="padding:16px 18px 20px">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">Paste into your protocol</div>
+          <div style="flex:1;height:1px;background:var(--color-neutral-300)"></div>
+        </div>
+        <div style="margin-top:10px;padding:14px;border:1.5px solid var(--color-text);font-size:15.5px;line-height:1.6;background:#fff;text-wrap:pretty">{{ result.paragraph }}</div>
+        <div onClick="{{ copyPara }}" class="btn btn-secondary" style="margin-top:12px;min-height:46px;display:flex;align-items:center;justify-content:flex-start;padding:0 14px;cursor:pointer;font:600 16px/1 var(--font-heading)">{{ copyLabel }}</div>
+        <div style="font-size:13px;color:var(--color-neutral-600);margin-top:10px;line-height:1.45">Round up and always report your assumptions and their source — a reviewer will ask where {{ result.assumeSource }} came from.</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isWizard }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:0 0 28px">
+      <div style="padding:14px 18px 16px;border-bottom:1px solid var(--color-neutral-300)">
+        <div style="font-size:15.5px;line-height:1.5;color:var(--color-neutral-700);text-wrap:pretty">Answer four questions about what you can actually do, and I'll name the design — plus the two that reviewers confuse it with.</div>
+      </div>
+      <sc-for list="{{ wizardQs }}" as="q" hint-placeholder-count="4">
+        <div style="padding:16px 18px 18px;border-bottom:1px solid var(--color-neutral-300);opacity:{{ q.opacity }}">
+          <div style="display:flex;gap:10px;align-items:baseline">
+            <div style="font:600 14px/1 var(--font-heading);color:var(--color-accent);flex:none">{{ q.num }}</div>
+            <div style="font:600 18.5px/1.22 var(--font-heading);text-wrap:pretty">{{ q.q }}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+            <sc-for list="{{ q.options }}" as="o" hint-placeholder-count="3">
+              <div onClick="{{ o.pick }}" style="min-height:46px;display:flex;align-items:center;gap:10px;padding:8px 12px;border:1.5px solid {{ o.border }};background:{{ o.bg }};color:{{ o.color }};cursor:pointer;font-size:15.5px;line-height:1.35" style-hover="border-color:var(--color-text)">
+                <div style="width:10px;height:10px;flex:none;background:{{ o.dot }};border:1.5px solid currentColor"></div>
+                <div style="flex:1">{{ o.text }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+      <sc-if value="{{ wizardDone }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:18px;background:var(--color-accent);color:#fff">
+          <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.16em;text-transform:uppercase;opacity:.85">Your design</div>
+          <div style="font:600 34.5px/1.12 var(--font-heading);margin-top:10px;letter-spacing:-0.02em;text-wrap:pretty">{{ verdict.name }}</div>
+          <div style="font-size:16px;line-height:1.5;margin-top:10px;opacity:.95;text-wrap:pretty">{{ verdict.why }}</div>
+        </div>
+        <div style="padding:16px 18px">
+          <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600)">What it can and can't say</div>
+          <div style="margin-top:10px">
+            <sc-for list="{{ verdict.points }}" as="p" hint-placeholder-count="3">
+              <div style="display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--color-neutral-300);font-size:15.5px;line-height:1.45">
+                <div style="flex:none;font:600 12.5px/1.5 var(--font-heading);color:var(--color-accent-700);width:34px">{{ p.tag }}</div>
+                <div style="flex:1;text-wrap:pretty">{{ p.text }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:16px;padding:12px;border:1.5px solid var(--color-text);font-size:15px;line-height:1.5;text-wrap:pretty"><strong>Often confused with:</strong> {{ verdict.confused }}</div>
+          <div style="display:flex;gap:8px;margin-top:14px">
+            <div onClick="{{ verdict.goCalc }}" class="btn btn-primary" style="flex:1;min-height:46px;display:flex;align-items:center;padding:0 12px;cursor:pointer;font:600 15.5px/1 var(--font-heading)">Size it →</div>
+            <div onClick="{{ resetWizard }}" class="btn btn-ghost" style="flex:none;min-height:46px;display:flex;align-items:center;padding:0 12px;cursor:pointer;font:600 15.5px/1 var(--font-heading)">Start over</div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isProtocol }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:0 0 28px">
+      <sc-if value="{{ noSectionOpen }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div style="padding:14px 18px 16px;border-bottom:2px solid var(--color-text)">
+            <div style="display:flex;justify-content:space-between;align-items:baseline">
+              <div style="font:600 12.5px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">{{ protoDone }} of {{ protoTotal }} sections drafted</div>
+              <div style="font-size:14px;color:var(--color-neutral-600)">{{ protoWords }} words</div>
+            </div>
+            <div style="display:flex;gap:3px;margin-top:10px;height:8px">
+              <sc-for list="{{ sections }}" as="s" hint-placeholder-count="10">
+                <div style="flex:1;background:{{ s.barFill }};border:1px solid var(--color-text)"></div>
+              </sc-for>
+            </div>
+            <div style="font-size:14.5px;color:var(--color-neutral-700);margin-top:10px;text-wrap:pretty">{{ protoHint }}</div>
+          </div>
+          <sc-for list="{{ sections }}" as="s" hint-placeholder-count="10">
+            <div onClick="{{ s.open }}" style="display:flex;gap:12px;align-items:flex-start;padding:13px 18px;border-bottom:1px solid var(--color-neutral-300);cursor:pointer" style-hover="background:var(--color-accent-100)">
+              <div style="font:600 14px/1.3 var(--font-heading);color:var(--color-neutral-500);width:20px;flex:none">{{ s.num }}</div>
+              <div style="flex:1;min-width:0">
+                <div style="font:600 17.5px/1.2 var(--font-heading)">{{ s.title }}</div>
+                <div style="font-size:14px;color:var(--color-neutral-600);margin-top:3px;text-wrap:pretty">{{ s.preview }}</div>
+              </div>
+              <div style="flex:none;font-size:16px;color:{{ s.stateColor }}">{{ s.tick }}</div>
+            </div>
+          </sc-for>
+          <div style="padding:16px 18px">
+            <div onClick="{{ exportProto }}" class="btn btn-primary" style="min-height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;cursor:pointer;font:600 17.5px/1 var(--font-heading)"><span>{{ exportLabel }}</span><span style="font-size:19.5px">↧</span></div>
+            <div style="font-size:13px;color:var(--color-neutral-600);margin-top:10px;line-height:1.45">Exports as a plain synopsis your guide can mark up. Section 10 follows the ICMR / GCP consent requirements your ethics committee will check.</div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ sectionOpen }}">
+        <div>
+          <div style="padding:12px 18px 12px;border-bottom:1px solid var(--color-neutral-300)">
+            <div onClick="{{ closeSection }}" style="font:600 14.5px/1 var(--font-heading);color:var(--color-accent-700);cursor:pointer;min-height:24px;display:flex;align-items:center">← All sections</div>
+          </div>
+          <div style="padding:16px 18px 8px">
+            <div style="font:600 12px/1 var(--font-heading);letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-600)">Section {{ openSection.num }}</div>
+            <h2 style="margin:8px 0 0;font:600 28.5px/1.15 var(--font-heading);letter-spacing:-0.015em;text-wrap:pretty">{{ openSection.title }}</h2>
+            <p style="margin:10px 0 0;font-size:16px;line-height:1.5;color:var(--color-neutral-700);text-wrap:pretty">{{ openSection.brief }}</p>
+          </div>
+          <div style="padding:8px 18px 0">
+            <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700);margin:10px 0 8px">Cover these</div>
+            <sc-for list="{{ openSection.prompts }}" as="p" hint-placeholder-count="4">
+              <div style="display:flex;gap:9px;padding:8px 0;border-top:1px solid var(--color-neutral-300);font-size:15.5px;line-height:1.45">
+                <div style="flex:none;width:14px;height:14px;border:1.5px solid var(--color-text);margin-top:3px;background:{{ p.fill }}"></div>
+                <div style="flex:1;text-wrap:pretty">{{ p.text }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="padding:16px 18px 0">
+            <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-600);margin-bottom:8px">Your draft</div>
+            <textarea onChange="{{ setDraft }}" value="{{ openSection.text }}" placeholder="{{ openSection.placeholder }}" style="width:100%;box-sizing:border-box;min-height:150px;border:1.5px solid var(--color-text);background:#fff;padding:12px;font-family:var(--font-body);font-size:16px;line-height:1.55;resize:vertical;color:var(--color-text)"></textarea>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+              <div style="font-size:13px;color:var(--color-neutral-600)">{{ openSection.count }}</div>
+              <div onClick="{{ useExample }}" style="font:600 14.5px/1 var(--font-heading);color:var(--color-accent-700);cursor:pointer;min-height:32px;display:flex;align-items:center">Show a worked example</div>
+            </div>
+          </div>
+          <sc-if value="{{ openSection.showExample }}">
+            <div style="margin:12px 18px 0;padding:13px;background:var(--color-neutral-100);border-left:3px solid var(--color-accent)">
+              <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700)">Worked example</div>
+              <div style="font-size:15.5px;line-height:1.55;margin-top:7px;color:var(--color-neutral-800);text-wrap:pretty">{{ openSection.example }}</div>
+              <div onClick="{{ pasteExample }}" style="font:600 14.5px/1 var(--font-heading);color:var(--color-accent-700);cursor:pointer;margin-top:10px;min-height:32px;display:flex;align-items:center">Use as my starting draft</div>
+            </div>
+          </sc-if>
+          <div style="padding:16px 18px 8px;display:flex;gap:8px">
+            <div onClick="{{ closeSection }}" class="btn btn-primary" style="flex:1;min-height:48px;display:flex;align-items:center;padding:0 14px;cursor:pointer;font:600 16.5px/1 var(--font-heading)">Save section</div>
+            <div onClick="{{ nextSection }}" class="btn btn-secondary" style="flex:none;min-height:48px;display:flex;align-items:center;padding:0 14px;cursor:pointer;font:600 16.5px/1 var(--font-heading)">Next →</div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  </div>
+
+  <div style="flex:none;border-top:2px solid var(--color-text);background:var(--color-bg);display:flex;gap:1px;padding-bottom:18px">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+      <div onClick="{{ t.pick }}" style="flex:1;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:{{ t.bg }};color:{{ t.color }};padding-top:6px" style-hover="background:var(--color-accent-100)">
+        <div style="width:20px;height:20px">{{ t.icon }}</div>
+        <div style="font:600 11.5px/1 var(--font-heading);letter-spacing:.04em">{{ t.label }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</sc-if>
+
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;402px&quot;,&quot;height&quot;:&quot;874px&quot;},&quot;homeLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;index&quot;,&quot;grid&quot;,&quot;track&quot;],&quot;default&quot;:&quot;track&quot;,&quot;tsType&quot;:&quot;'index'|'grid'|'track'&quot;,&quot;section&quot;:&quot;Variations&quot;},&quot;lessonFormat&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cards&quot;,&quot;read&quot;],&quot;default&quot;:&quot;cards&quot;,&quot;tsType&quot;:&quot;'cards'|'read'&quot;,&quot;section&quot;:&quot;Variations&quot;},&quot;calcMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;stepper&quot;,&quot;form&quot;],&quot;default&quot;:&quot;stepper&quot;,&quot;tsType&quot;:&quot;'stepper'|'form'&quot;,&quot;section&quot;:&quot;Variations&quot;},&quot;showGamification&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Variations&quot;}}">
+const A = '#0088b0', INK = '#201e1d', N100 = '#f8f4f4', N300 = '#d7d3d3', N500 = '#9b9797', N600 = '#7d7979', A100 = '#e9f8ff', A700 = '#006786';
+
+const MODULES = [
+  { num:'01', title:'Study design types', kicker:'Foundations', mins:6, track:'Foundations',
+    caseText:'Your unit sees a lot of anaemia in first-year MBBS students. You want to publish something about it this year — but "something" is not a design.',
+    cards:[
+      {kicker:'The case', title:'One question, four possible studies', body:'Anaemia in first-years could be a prevalence survey, a comparison of hostellers vs day-scholars, a follow-up of who becomes anaemic over a year, or a trial of iron supplementation. Same topic, four designs, four different papers. Example: "How many first-years are anaemic right now?" is a prevalence survey; "Do students who become anaemic this year share a diet pattern?" needs a whole year of follow-up.', noteLabel:'Hold on to this', note:'Design follows the question, never the other way round. Write the question in one sentence before you choose anything.'},
+      {kicker:'Concept', title:'Observe or intervene', body:'The first fork is whether you assign the exposure. If you hand out iron tablets by allocation, it is experimental — a trial. If you only watch and record what students already do, it is observational. Example: deciding by coin toss who gets a weekly iron tablet is experimental; simply asking who already takes iron supplements on their own is observational, even though both involve "iron intake".', noteLabel:'Why it matters', note:'Only allocation you control can support a causal claim. Observation gives association, however clean your data are.'},
+      {kicker:'Concept', title:'Where you stand in time', body:'Cross-sectional measures exposure and outcome at once — good for prevalence. Cohort starts with exposure and waits for outcome — good for incidence and risk. Case-control starts with the outcome and looks backwards — good for rare outcomes. Example: testing Hb in every first-year this month is cross-sectional; enrolling 200 non-anaemic students and re-testing them in a year is a cohort; recruiting 50 anaemic students and 50 non-anaemic students and asking both about last year\u2019s diet is case-control.', noteLabel:'On your case', note:'"How many first-years are anaemic?" is cross-sectional. "Do hostellers become anaemic more often over a year?" is a cohort.'},
+      {kicker:'Common mistake', title:'Calling a survey a cohort', body:'Measuring haemoglobin once and then asking students to recall last year\u2019s diet is still cross-sectional. Nothing was followed forward, so you cannot report incidence — only prevalence. Example: if you test Hb today and ask "did you skip breakfast last year?", you have one time point of data collection plus a retrospective question — that is still cross-sectional in design, just with a recalled variable baked in.', hasQuiz:true,
+       quizQ:'You measure Hb once in 400 students and also record hostel status the same day. What can you report?',
+       options:['Incidence of anaemia over one year','Prevalence of anaemia, and its association with hostel status','That hostel food causes anaemia'],
+       answer:1, explain:'One point in time gives prevalence and association. Temporal order is unknown, so causation is off the table and incidence needs follow-up.'}
+    ]},
+  { num:'02', title:'Research question & PICO', kicker:'Foundations', mins:5, track:'Foundations',
+    caseText:'Same anaemia idea. Your guide has written "too vague" on your synopsis twice.',
+    cards:[
+      {kicker:'The case', title:'"Study of anaemia in students" is not a question', body:'It names a topic. A question names who, what you are comparing, and what you will measure — so a reader can predict your results table before reading it. Example: "study of anaemia in students" could mean prevalence, causes, treatment, or awareness — a reader has no idea which table to expect.', noteLabel:'Test it', note:'If two people would design different studies from your sentence, it is still a topic.'},
+      {kicker:'Concept', title:'PICO, in your words', body:'P: among first-year MBBS students. I/E: hostel residence. C: compared with day-scholars. O: prevalence of anaemia by WHO Hb cut-off. Four slots, one sentence, and your objectives write themselves. Example: "Among first-year MBBS students (P), is hostel residence (I/E), compared with day-scholar status (C), associated with a higher prevalence of anaemia (O)?" — every slot filled, nothing left to guess.', noteLabel:'For descriptive studies', note:'No comparison group? Drop the C and keep P, the exposure of interest, and O. PICO is a checklist, not a rule.'},
+      {kicker:'Concept', title:'FINER — is it worth doing', body:'Feasible in your posting, Interesting to someone besides you, Novel enough to add something, Ethical, and Relevant to practice. Most rejected undergraduate projects fail on F, not on N. Example: a genetic study of anaemia sounds novel but needs equipment and months you don\u2019t have — it fails Feasible even though it passes every other letter.', noteLabel:'Be honest about F', note:'Count the patients that actually walk through your OPD in three months before you promise 400.'},
+      {kicker:'Common mistake', title:'Ten objectives, none primary', body:'One primary objective drives your sample size and your main analysis. Everything else is secondary and labelled as such — otherwise every p-value in the paper becomes suspect. Example: "estimate prevalence" as primary, with "describe dietary habits" and "compare by year of study" listed clearly as secondary — not all three treated as equally important.', hasQuiz:true,
+       quizQ:'Which is a usable primary objective?',
+       options:['To study anaemia and its various factors in medical students','To estimate the prevalence of anaemia among first-year MBBS students at one college in 2026','To prove that hostel food is nutritionally inadequate'],
+       answer:1, explain:'It names population, outcome, place and time, and it is measurable. The first is a topic; the third sets out to prove a conclusion.'}
+    ]},
+  { num:'03', title:'Hypothesis & p-values', kicker:'Inference', mins:6, track:'Inference',
+    caseText:'You compared mean Hb in 60 hostellers and 60 day-scholars. Your output says p = 0.04.',
+    cards:[
+      {kicker:'The case', title:'What p = 0.04 does not mean', body:'It is not a 4% chance that you are wrong, and not a 96% chance the effect is real. It means: if there were truly no difference, data this extreme would turn up 4% of the time. Example: imagine repeating your exact study 100 times in a world where hostel residence truly has no effect on Hb — about 4 of those 100 repeats would produce a gap this large purely by chance.', noteLabel:'Say it out loud', note:'p is a statement about data under the null — never about the probability that your hypothesis is true.'},
+      {kicker:'Concept', title:'Null and alternative', body:'H0 says the two mean Hb values are equal. H1 says they differ. You never prove H0; you either reject it or fail to reject it. "No significant difference" means your study could not detect one. Example: if your p-value came out 0.30, you would fail to reject H0 — you have not proven the groups are equal, only that your data didn\u2019t show a convincing difference.', noteLabel:'Absence of evidence', note:'A negative result in 60 students may just be a small study. Report the confidence interval so readers can see what you ruled out.'},
+      {kicker:'Concept', title:'The two errors', body:'Type I: you claim a difference that is not there — its rate is alpha, usually 5%. Type II: you miss a real difference — its rate is beta, and 1 minus beta is your power, usually 80%. Example: alpha 5% means that even if hostel and day-scholar Hb were truly identical, you\u2019d falsely call them different 1 time in 20 by chance alone; beta means a real 1 g/dL gap could still slip past your test 1 time in 5 if your sample is too small.', noteLabel:'Where sample size lives', note:'Fixing alpha and power is exactly what the sample size calculator asks you for.'},
+      {kicker:'Common mistake', title:'Significant but meaningless', body:'A 0.2 g/dL difference in Hb can be significant with a huge sample and clinically irrelevant. Report the effect size and its confidence interval alongside the p-value, always. Example: with 2,000 students per group, even a trivial 0.1 g/dL gap can produce p < 0.05 — statistically real, but no clinician would change practice over it.', hasQuiz:true,
+       quizQ:'Mean difference 0.2 g/dL, 95% CI 0.01 to 0.39, p = 0.04. Fair conclusion?',
+       options:['Hostel residence significantly lowers haemoglobin','A small difference was detected; the interval includes values too small to matter clinically','No difference exists'],
+       answer:1, explain:'The interval is compatible with a trivial difference. Statistical significance and clinical importance are separate questions.'}
+    ]},
+  { num:'04', title:'Sampling methods', kicker:'Foundations', mins:5, track:'Foundations',
+    caseText:'There are 250 first-years. You need 152 and you have the college roll list.',
+    cards:[
+      {kicker:'The case', title:'Who you actually ask decides what you can claim', body:'Standing outside the hostel mess at 9pm gets you 152 students fast — and a sample that over-represents hostellers, the very exposure you are studying. Example: if 80% of your sample turns out to be hostellers when the true campus ratio is 55%, your prevalence estimate is skewed toward whatever hostel life does to Hb, not the true campus picture.', noteLabel:'Name it', note:'That is convenience sampling. It is allowed if you say so and discuss the bias, but it is not representative.'},
+      {kicker:'Concept', title:'The probability four', body:'Simple random: numbers from a random table. Systematic: every kth name on the roll. Stratified: fixed shares from hostellers and day-scholars so both are well represented. Cluster: pick whole sections when no individual list exists. Example: with 250 names and a target of 152, simple random draws 152 unique random numbers between 1 and 250; stratified instead fixes, say, 84 from the 140 hostellers and 68 from the 110 day-scholars, keeping both groups\u2019 share intact.', noteLabel:'You have a roll list', note:'With a complete sampling frame of 250, simple random or stratified random is straightforward — use it and say how you generated the numbers.'},
+      {kicker:'Concept', title:'Frame, unit, and the gap', body:'Your sampling frame is the roll list; your unit is one student. Anyone enrolled but never on the list — a late admission, a student on leave — is outside your frame, and that gap belongs in your limitations. Example: three students who joined after the roll was frozen in August have zero chance of selection — note this explicitly rather than letting a reviewer find it first.', hasQuiz:true,
+       quizQ:'You take every 2nd name from an alphabetical roll of 250. This is:',
+       options:['Simple random sampling','Systematic random sampling','Stratified sampling'],
+       answer:1, explain:'A fixed interval from an ordered list is systematic sampling — cheap and defensible, as long as the list order has no hidden pattern.'}
+    ]},
+  { num:'05', title:'Bias & confounding', kicker:'Inference', mins:6, track:'Inference',
+    caseText:'Your hostellers are more anaemic. They are also mostly female, and mostly from lower income families.',
+    cards:[
+      {kicker:'The case', title:'A third factor is doing the work', body:'Sex is associated with hostel residence in your sample and independently causes lower Hb. Some of the "hostel effect" you measured is actually the sex distribution. Example: if hostellers are 70% female and females menstruate and lose iron monthly, part of the raw 20-point gap in anaemia prevalence between hostellers and day-scholars is really a sex gap wearing a hostel-residence costume.', noteLabel:'The three tests', note:'A confounder is associated with the exposure, causes the outcome independently, and is not a step on the causal path between them.'},
+      {kicker:'Concept', title:'Bias enters by design, confounding by nature', body:'Selection bias comes from how you recruited. Information bias comes from how you measured — a poorly calibrated Hb meter, or recall that differs between groups. Neither is fixed by a bigger sample. Example: if your Hb meter reads systematically 0.5 g/dL low, testing 10,000 students instead of 100 just gives you a more precisely wrong number.', noteLabel:'Read that again', note:'More participants make a biased estimate more precise, not more correct.'},
+      {kicker:'Concept', title:'What you can do about it', body:'At design: randomise, restrict, or match. At analysis: stratify, or adjust in a multivariable model. Both need you to have measured the confounder — so list your likely confounders before data collection. Example: matching means for every anaemic hosteller you enrol, you deliberately also enrol a non-anaemic hosteller of the same sex — restriction means you might study only female students to remove sex as a variable entirely.', noteLabel:'On your case', note:'Record sex, diet, income and menstrual history in the proforma. You cannot adjust for a variable you never collected.'},
+      {kicker:'Common mistake', title:'Adjusting for a mediator', body:'If iron intake is how hostel life affects Hb, adjusting for iron intake removes the very effect you wanted to see. Confounders get adjusted; mediators get described. Example: hostel food (exposure) → lower iron intake (mediator) → anaemia (outcome). Adjusting for iron intake in the model would make the hostel effect vanish statistically — not because it isn\u2019t real, but because you controlled away the mechanism itself.', hasQuiz:true,
+       quizQ:'Your hostel group is 70% female, the day-scholar group 40%. Sex is:',
+       options:['A confounder to adjust for','A source of selection bias in the frame','An effect of hostel residence'],
+       answer:0, explain:'It is linked to the exposure and independently affects Hb — classic confounding. Adjust for it, or stratify your analysis by sex.'}
+    ]},
+  { num:'06', title:'Measures of association', kicker:'Inference', mins:6, track:'Inference',
+    caseText:'40 of 100 hostellers are anaemic; 20 of 100 day-scholars are.',
+    cards:[
+      {kicker:'The case', title:'Same table, three numbers', body:'Risk in hostellers is 0.40, in day-scholars 0.20. Relative risk is 2.0. Risk difference is 20 percentage points. Odds ratio is (40/60)/(20/80) = 2.67. All three are correct. Example: "hostellers have twice the risk" (RR), "20 more per 100 hostellers are anaemic" (risk difference), and "the odds are 2.67 times higher" (OR) are all true descriptions of the exact same table — they just answer slightly different questions.', noteLabel:'Pick by design', note:'Cohort and cross-sectional data give you risk, so report RR or prevalence ratio. Case-control cannot give risk — report OR.'},
+      {kicker:'Concept', title:'Why OR overstates RR', body:'When the outcome is common, the odds ratio drifts away from the relative risk — 2.67 versus 2.0 here. With a rare outcome the two converge, which is why OR is acceptable in case-control studies. Example: if anaemia prevalence were only 2% instead of 20-40%, the OR and RR in the same data would come out nearly identical — the gap between them only opens up as the outcome gets common.', noteLabel:'In writing', note:'Never call an odds ratio a "risk" in your discussion. Reviewers catch it every time.'},
+      {kicker:'Concept', title:'Absolute numbers persuade clinicians', body:'A 20 percentage point risk difference means 1 extra anaemic student for every 5 in the hostel — number needed to harm of 5. That lands harder in a discussion than any ratio. Example: telling a warden "1 in 5 hostellers you house becomes an extra anaemia case compared with day-scholars" is far more actionable than quoting "RR = 2.0" alone.', hasQuiz:true,
+       quizQ:'In an unmatched case-control study of anaemia, which measure is appropriate?',
+       options:['Relative risk','Odds ratio','Incidence rate'],
+       answer:1, explain:'You sampled on outcome, so underlying risk is unknown. The odds ratio is the measure a case-control design supports.'}
+    ]},
+  { num:'07', title:'Diagnostic test stats', kicker:'Measurement', mins:5, track:'Measurement',
+    caseText:'You want to know whether a portable Hb meter can replace the lab in your screening camp.',
+    cards:[
+      {kicker:'Concept', title:'Sensitivity and specificity are the test', body:'Sensitivity is the share of truly anaemic students the meter flags. Specificity is the share of non-anaemic students it clears. Both are properties of the test against a reference standard, not of your camp. Example: of 50 students who are truly anaemic on the lab analyser, if the meter correctly flags 45, sensitivity is 90%; of 50 truly non-anaemic students, if it correctly clears 47, specificity is 94%.', noteLabel:'Reference standard first', note:'No credible gold standard, no diagnostic accuracy study. Name yours in the methods — here, venous Hb on the lab analyser.'},
+      {kicker:'Concept', title:'PPV and NPV move with prevalence', body:'The same meter looks brilliant in a high-prevalence camp and useless in a screening clinic, because predictive values depend on how common the condition is. Report prevalence alongside them. Example: at 40% prevalence a positive meter result is very likely a true case; screen a low-risk population at 5% prevalence with the identical meter, and most positives turn out to be false alarms even though sensitivity and specificity haven\u2019t changed.', noteLabel:'Say it in the paper', note:'Sensitivity and specificity travel between settings. PPV and NPV do not.'},
+      {kicker:'Common mistake', title:'A 2x2 table with the wrong reference', body:'Comparing the meter against another meter measures agreement, not accuracy — that is a Bland-Altman or kappa question, not sensitivity and specificity. Example: running two portable meters side-by-side and computing "sensitivity" of one against the other tells you how often they agree, not how often either is correct against a real diagnosis.', hasQuiz:true,
+       quizQ:'Prevalence of anaemia falls from 40% to 8% but the meter is unchanged. What drops?',
+       options:['Sensitivity','Positive predictive value','Specificity'],
+       answer:1, explain:'With fewer true cases, more positives are false. PPV falls while sensitivity and specificity stay put.'}
+    ]},
+  { num:'08', title:'Randomization & blinding', kicker:'Trials', mins:5, track:'Trials',
+    caseText:'You have moved on: a trial of weekly versus daily iron in 90 anaemic students.',
+    cards:[
+      {kicker:'Concept', title:'Randomisation buys you the unknown confounders', body:'It balances the variables you measured and the ones you never thought of. That is what no amount of statistical adjustment can do for an observational study. Example: you didn\u2019t think to record gut absorption differences or baseline ferritin — true randomisation still spreads these evenly across both arms purely by chance, even though you never measured them.', noteLabel:'Alternate allocation is not random', note:'Anything the recruiter can predict — alternating, odd/even roll numbers, date of visit — is not randomisation.'},
+      {kicker:'Concept', title:'Sequence, concealment, blinding — three different things', body:'Generation is how you make the list. Allocation concealment hides the next assignment from whoever recruits. Blinding hides the received arm from participant, clinician or assessor afterwards. Example: a computer-generated random list (sequence) is worthless if it\u2019s pinned on the noticeboard (no concealment) — the recruiter can simply steer a sicker-looking student toward the arm they favour.', noteLabel:'The cheap version', note:'Sequentially numbered opaque sealed envelopes give you real concealment with no budget at all.'},
+      {kicker:'Concept', title:'Block and stratify for small trials', body:'With 90 participants, simple randomisation can leave arms lopsided. Block randomisation in blocks of 4 or 6 keeps the arms even as recruitment goes along; stratify by sex if it matters to your outcome. Example: a block of 6 guarantees exactly 3 weekly and 3 daily allocations within every 6 enrolled, so even if recruitment stops early at 42 students, the arms stay balanced instead of ending up 30 versus 12.', hasQuiz:true,
+       quizQ:'The recruiting intern can see the next allocation in an open list. Which is broken?',
+       options:['Sequence generation','Allocation concealment','Outcome assessment'],
+       answer:1, explain:'The list may be perfectly random, but a visible next assignment lets recruitment steer patients — concealment has failed.'}
+    ]},
+  { num:'09', title:'Choosing the right stat test', kicker:'Measurement', mins:6, track:'Measurement',
+    caseText:'Data collection is over. You have Hb (continuous), hostel status (binary), and diet score (ordinal).',
+    cards:[
+      {kicker:'Concept', title:'Three questions pick the test', body:'What type is the outcome? How many groups are you comparing? Are the observations independent or paired? Answer those three and the test is nearly always forced. Example: Hb (continuous) compared between hostellers and day-scholars (two independent groups) leads you straight to the unpaired t-test — no other decision left to make once those three answers are fixed.', noteLabel:'Do this before collecting data', note:'If you cannot name the test now, your objective is still too vague.'},
+      {kicker:'Concept', title:'The short table', body:'Continuous outcome, two independent groups: unpaired t-test, or Mann-Whitney if badly skewed. Paired before/after: paired t-test or Wilcoxon. Three or more groups: ANOVA or Kruskal-Wallis. Two categorical variables: chi-square, or Fisher exact when cells are small. Example: Hb before and after 3 months of iron in the same 40 students is a paired before/after comparison — paired t-test, not the unpaired version, because each student is measured twice.', noteLabel:'The small-cell rule', note:'Any expected cell count under 5 pushes you to Fisher exact — check expected, not observed, counts.'},
+      {kicker:'Common mistake', title:'Testing normality of the wrong thing', body:'It is the residuals or the outcome within each group that need to be roughly normal, not the whole column pooled. And with n over about 30 per group the t-test is fairly forgiving. Example: pooling all 120 Hb values together might look non-normal because hostellers and day-scholars have different means — but each group\u2019s values on their own can still be roughly bell-shaped, which is what actually matters.', hasQuiz:true,
+       quizQ:'Mean Hb in hostellers vs day-scholars, roughly normal, independent, n = 60 each. Test?',
+       options:['Paired t-test','Unpaired (independent samples) t-test','Chi-square test'],
+       answer:1, explain:'Continuous outcome, two independent groups, approximately normal — the unpaired t-test, reported with the mean difference and its 95% CI.'}
+    ]},
+  { num:'10', title:'Ethics & consent', kicker:'Trials', mins:6, track:'Trials',
+    caseText:'Your protocol is ready. The ethics committee meets in three weeks and wants a participant information sheet.',
+    cards:[
+      {kicker:'Concept', title:'Consent is a process, not a signature', body:'Information given in language the participant actually reads, time to ask questions, voluntariness with no penalty for refusal, and a copy handed back. The signature only records that this happened. Example: handing a student the sheet, reading key points aloud in their preferred language, letting them go home and think it over, then taking the signature the next day — that whole sequence is the consent, not the final scribble.', noteLabel:'Students are vulnerable', note:'When your participants are your own juniors, spell out that refusal has no academic consequence — and let someone unconnected to their assessment take consent.'},
+      {kicker:'Concept', title:'What the information sheet must carry', body:'Purpose and that this is research; procedures and time required; foreseeable risks; benefits, or a clear statement of none; alternatives; costs and any reimbursement; confidentiality and how data are stored; the right to withdraw at any time; and named contacts for the investigator and the committee. Example: "You will give 3 mL of blood once, taking about 15 minutes; you may feel brief bruising; there is no cost to you; your data will be coded and stored on a password-protected drive" covers procedure, risk, cost and confidentiality in one paragraph.', noteLabel:'Local rules', note:'Indian committees expect alignment with the ICMR national ethical guidelines, ICH-GCP and the Declaration of Helsinki — plus a translated copy in the local language and version number, date and page number in the footer.'},
+      {kicker:'Concept', title:'Minors, and who signs', body:'For participants under 18, the parent or guardian consents; mature minors aged 7 to 17 additionally give assent on a separate, simpler form. Prepare both documents, not one with a second signature line. Example: a 17-year-old first-year needs a guardian consent form in full legal language plus a short assent form written at a level a teenager can genuinely understand — two separate documents, not a combined one.', hasQuiz:true,
+       quizQ:'Your participants are 17-year-old first-years. What do you submit?',
+       options:['One consent form signed by the student','A parental consent form plus a separate assent form for the student','Nothing extra — college permission covers it'],
+       answer:1, explain:'Under 18 means guardian consent, with the minor\u2019s own assent recorded separately. Institutional permission never substitutes for individual consent.'}
+    ]},
+  { num:'11', title:'Writing the protocol', kicker:'Writing', mins:6, track:'Writing',
+    caseText:'Everything is decided. Now it has to fit the synopsis format your committee accepts.',
+    cards:[
+      {kicker:'Concept', title:'The protocol is a promise, the paper is a report', body:'Write the protocol in future tense and lock your analysis plan in it. Anything you decide after seeing the data is exploratory and must be labelled that way. Example: writing "the chi-square test will be used to compare prevalence between groups" before you collect data is a protocol commitment; deciding to also run a post-hoc regression after seeing an interesting pattern is exploratory and must be flagged as such in the paper.', noteLabel:'Register it', note:'Interventional studies should be registered — CTRI in India — before the first participant is enrolled.'},
+      {kicker:'Concept', title:'The spine most formats want', body:'Title; introduction and rationale; review of literature; aim and objectives; methodology — design, setting, duration, population, inclusion and exclusion criteria, sample size with justification, sampling technique, study tools, data collection; statistical analysis plan; ethical considerations; references; annexures with the proforma and consent documents. Example: a committee that returns your synopsis for "missing sample size justification" is really asking for one sentence citing where your assumed prevalence came from — a five-minute fix once you know the spine.', noteLabel:'Where marks are lost', note:'Vague inclusion criteria and a sample size with no cited assumptions. Both are avoidable in ten minutes.'},
+      {kicker:'Common mistake', title:'Methods that no one could repeat', body:'"Hb was measured" is not a method. Name the instrument, the sample type, who measured, and the cut-off with its source. Write it so another intern could run your study without asking you anything. Example: "Hb was estimated from venous blood on an automated analyser by a trained phlebotomist, using the WHO cut-off of <12 g/dL in females" leaves nothing for another student to guess.', hasQuiz:true,
+       quizQ:'Which belongs in the protocol rather than the results?',
+       options:['The observed prevalence','The planned statistical tests for each objective','The final p-values'],
+       answer:1, explain:'The analysis plan is written before data collection. Pre-specifying it is what keeps your primary p-value credible.'}
+    ]},
+  { num:'12', title:'Literature search basics', kicker:'Writing', mins:5, track:'Writing',
+    caseText:'Your review of literature is eight papers your senior sent you on WhatsApp.',
+    cards:[
+      {kicker:'Concept', title:'Build the search from your PICO', body:'Take the concepts from your question, add synonyms and MeSH terms for each, join synonyms with OR and concepts with AND. Anaemia OR "iron deficiency" AND student* AND prevalence. Example: searching just "anaemia students" in PubMed misses papers that say "iron deficiency" instead of "anaemia" — the OR clause is what catches both wordings.', noteLabel:'Write it down', note:'Record the database, the exact string, the date and the number of hits. A reviewer may ask, and you will not remember.'},
+      {kicker:'Concept', title:'Where to look, in order', body:'PubMed for indexed medicine, Google Scholar to catch the rest and find citing papers, Cochrane for existing systematic reviews, and your own national journals for local prevalence figures your sample size needs. Example: PubMed may return 40 hits for your search, but Google Scholar\u2019s "cited by" on the best of those 40 can surface a 2024 Indian study PubMed hadn\u2019t indexed yet — exactly the local prevalence figure your calculator needs.', noteLabel:'For the calculator', note:'The p or SD you feed the sample size calculator should come from a cited study in a similar population — that citation is the justification.'},
+      {kicker:'Common mistake', title:'A review that is a list of abstracts', body:'A review of literature argues towards your gap: what is known, what conflicts, what is missing here. Paragraph per theme, not paragraph per paper. Example: instead of "Study A found X. Study B found Y. Study C found Z.", write "Prevalence estimates across Indian medical colleges range from 20-45%, but none examine hostel residence specifically — the gap this study addresses."', hasQuiz:true,
+       quizQ:'Your sample size assumes p = 32%. Where should that number come from?',
+       options:['A guess that gives a convenient n','A cited study in a comparable population, or 50% if nothing exists','Your pilot of 10 students'],
+       answer:1, explain:'Cite the assumption. With no usable estimate, p = 50% is the conservative default because it maximises the required sample.'}
+    ]}
+];
+
+const CALC_TYPES = [
+  {id:'prop1', label:'Prevalence', note:'One proportion', span:'span 1'},
+  {id:'prop2', label:'Two proportions', note:'Compare % in 2 groups', span:'span 1'},
+  {id:'mean1', label:'One mean', note:'Estimate an average', span:'span 1'},
+  {id:'mean2', label:'Two means', note:'Compare 2 averages', span:'span 1'},
+  {id:'corr', label:'Correlation', note:'Expected r', span:'span 1'},
+  {id:'diag', label:'Sensitivity / specificity', note:'Diagnostic accuracy', span:'span 1'},
+  {id:'cc', label:'Case-control (unmatched)', note:'Expected odds ratio, with control ratio', span:'span 2'}
+];
+
+const FIELDS = {
+  prop1:[
+    {k:'p', label:'Expected prevalence', unit:'%', hint:'From a comparable published study. Use 50% if nothing exists — it needs the largest sample.', presets:[10,32,50]},
+    {k:'d', label:'Absolute precision', unit:'± %', hint:'How wide you can live with. ±5% around 32% means a CI of 27–37%.', presets:[3,5,10]},
+    {k:'alpha', label:'Confidence level', unit:'%', hint:'95% is standard and means alpha = 0.05.', presets:[90,95,99]}
+  ],
+  prop2:[
+    {k:'p1', label:'Proportion in group 1', unit:'%', hint:'The exposed or intervention group, from literature or a pilot.', presets:[40,50,60]},
+    {k:'p2', label:'Proportion in group 2', unit:'%', hint:'The comparison group. The gap between the two is your effect size.', presets:[20,25,30]},
+    {k:'alpha', label:'Confidence level', unit:'%', hint:'Two-sided. 95% unless you have a reason.', presets:[95,99]},
+    {k:'power', label:'Power', unit:'%', hint:'80% is the minimum most committees accept; 90% costs more participants.', presets:[80,90]}
+  ],
+  mean1:[
+    {k:'sd', label:'Expected SD', unit:'units', hint:'Standard deviation of the outcome in a similar population — cite it.', presets:[1.5,2,2.5]},
+    {k:'d', label:'Absolute precision', unit:'± units', hint:'How close to the true mean you need to land.', presets:[0.3,0.5,1]},
+    {k:'alpha', label:'Confidence level', unit:'%', hint:'95% is standard.', presets:[90,95,99]}
+  ],
+  mean2:[
+    {k:'delta', label:'Difference to detect', unit:'units', hint:'The smallest difference that would matter clinically — not the one you hope to find.', presets:[0.5,1,1.5]},
+    {k:'sd', label:'Common SD', unit:'units', hint:'Pooled standard deviation of the outcome in both groups.', presets:[1.5,2,2.5]},
+    {k:'alpha', label:'Confidence level', unit:'%', hint:'Two-sided, 95%.', presets:[95,99]},
+    {k:'power', label:'Power', unit:'%', hint:'80% or 90%.', presets:[80,90]}
+  ],
+  corr:[
+    {k:'r', label:'Expected correlation', unit:'r', hint:'The smallest r worth detecting. 0.3 is a modest association.', presets:[0.2,0.3,0.5]},
+    {k:'alpha', label:'Confidence level', unit:'%', hint:'Two-sided, 95%.', presets:[95,99]},
+    {k:'power', label:'Power', unit:'%', hint:'80% or 90%.', presets:[80,90]}
+  ],
+  diag:[
+    {k:'sn', label:'Expected sensitivity', unit:'%', hint:'From literature on the test you are evaluating.', presets:[80,90,95]},
+    {k:'d', label:'Absolute precision', unit:'± %', hint:'Width you will accept around the sensitivity estimate.', presets:[5,10]},
+    {k:'alpha', label:'Confidence level', unit:'%', hint:'95% is standard.', presets:[95,99]},
+    {k:'prev', label:'Disease prevalence', unit:'%', hint:'Used to work out how many people you must screen to find that many cases.', presets:[10,20,40]}
+  ],
+  cc:[
+    {k:'or', label:'Odds ratio to detect', unit:'OR', hint:'The smallest association worth finding. 2.0 is a common minimum.', presets:[1.5,2,3]},
+    {k:'p0', label:'Exposure in controls', unit:'%', hint:'Proportion of controls with the exposure, from literature.', presets:[15,20,30]},
+    {k:'k', label:'Controls per case', unit:':1', hint:'More than 4 controls per case adds little power.', presets:[1,2,4]},
+    {k:'alpha', label:'Confidence level', unit:'%', hint:'Two-sided, 95%.', presets:[95,99]},
+    {k:'power', label:'Power', unit:'%', hint:'80% or 90%.', presets:[80,90]}
+  ]
+};
+
+const DEFAULTS = {p:32, d:5, alpha:95, power:80, p1:40, p2:20, sd:2, delta:1, r:0.3, sn:90, prev:20, or:2, p0:20, k:2, dropout:10, N:250};
+
+const TYPE_DEFAULTS = {
+  prop1:{p:32, d:5, alpha:95},
+  prop2:{p1:40, p2:20, alpha:95, power:80},
+  mean1:{sd:2, d:0.5, alpha:95},
+  mean2:{delta:1, sd:2, alpha:95, power:80},
+  corr:{r:0.3, alpha:95, power:80},
+  diag:{sn:90, d:10, alpha:95, prev:20},
+  cc:{or:2, p0:20, k:2, alpha:95, power:80}
+};
+
+const WIZARD = [
+  {num:'01', q:'Do you assign the exposure or treatment?', options:['Yes — I allocate who gets what','No — I only observe what already happens']},
+  {num:'02', q:'When are exposure and outcome measured?', options:['Both at one point in time','Exposure first, then I follow for the outcome','Outcome first, then I look back at exposure']},
+  {num:'03', q:'How common is your outcome?', options:['Common — many people have it','Rare — few people have it']},
+  {num:'04', q:'What do you have time and hands for?', options:['A few months, one visit per participant','A year or more, with follow-up visits']}
+];
+
+const SECTIONS = [
+  {num:'01', title:'Title', brief:'One line a stranger can understand: what, in whom, where, and the design.', prompts:['Names the population and the setting','Names the outcome or exposure','Ends with the design — "a cross-sectional study"','Under about 25 words, no abbreviations'], placeholder:'Prevalence of anaemia among first-year MBBS students: a cross-sectional study', example:'Prevalence of anaemia and its association with hostel residence among first-year MBBS students at a tertiary care teaching hospital: a cross-sectional study.'},
+  {num:'02', title:'Introduction & rationale', brief:'Funnel from the general problem to your specific gap in three or four paragraphs.', prompts:['Burden of the problem, globally then locally','What is already known','What is conflicting or missing','Why this study, in this setting, now'], placeholder:'Anaemia affects an estimated…', example:'Anaemia remains among the most common nutritional deficiencies in India, with national survey figures showing a high burden in adolescent girls and young women. Studies in medical undergraduates report prevalence between 20% and 45%, but most are single-group surveys and few examine residence as a determinant. No such data exist for our institution, where a majority of first-year students live in hostels with a common mess. This study estimates the local prevalence and examines its association with hostel residence.'},
+  {num:'03', title:'Aim & objectives', brief:'One primary objective. Secondary objectives clearly labelled as secondary.', prompts:['Primary objective is measurable and singular','Secondary objectives listed separately','Each objective starts with a verb — estimate, compare, determine','Each maps to an analysis later'], placeholder:'Primary: To estimate…', example:'Primary: To estimate the prevalence of anaemia among first-year MBBS students using the WHO haemoglobin cut-offs. Secondary: (i) To compare prevalence between hostel residents and day-scholars; (ii) To describe dietary and menstrual factors associated with anaemia.'},
+  {num:'04', title:'Study design & setting', brief:'Name the design, the place, and the exact period.', prompts:['Design named in standard terms','Institution and department','Start and end dates of data collection','Who will be present at data collection'], placeholder:'A cross-sectional study conducted at…', example:'A cross-sectional study conducted in the Department of Community Medicine of a teaching hospital, over four months from September to December 2026, during scheduled academic hours.'},
+  {num:'05', title:'Population & eligibility', brief:'Inclusion and exclusion criteria specific enough that two people would enrol the same students.', prompts:['Target population and sampling frame','Inclusion criteria — objective and checkable','Exclusion criteria with a reason for each','How eligibility will be verified'], placeholder:'Inclusion: …  Exclusion: …', example:'Inclusion: all first-year MBBS students enrolled in the 2026 batch who give written informed consent. Exclusion: known haemoglobinopathy (excluded because Hb is not nutritionally determined); blood transfusion or iron therapy within the preceding three months; acute febrile illness on the day of sampling.'},
+  {num:'06', title:'Sample size & sampling', brief:'The number, the formula, every assumption, and the citation behind it.', prompts:['Formula stated','Every assumption given with its source','Alpha, precision or power stated','Sampling technique and how the list was generated'], placeholder:'Paste the paragraph from the calculator here…', example:'Assuming a prevalence of 32% (Sharma et al., 2023, in a comparable undergraduate population), 95% confidence and an absolute precision of ±5%, the required sample size by n = Z²p(1−p)/d² is 335; corrected for a finite population of 250 first-year students, 143 students are required. Allowing 10% non-response, 159 will be approached. Participants will be selected by simple random sampling from the college roll list using computer-generated random numbers.'},
+  {num:'07', title:'Study tools & data collection', brief:'Instruments, who uses them, and the cut-offs — written so it could be repeated without you.', prompts:['Each instrument named with make or version','Who measures, and their training','Units and diagnostic cut-offs with source','How the proforma is filled and stored'], placeholder:'Haemoglobin will be estimated by…', example:'A pre-tested semi-structured proforma will capture sociodemographic, dietary and menstrual history. Haemoglobin will be estimated from venous blood on an automated haematology analyser in the central laboratory; anaemia will be defined by WHO cut-offs (<12 g/dL in non-pregnant females, <13 g/dL in males). All samples will be drawn by a trained phlebotomist between 9 and 11 am.'},
+  {num:'08', title:'Statistical analysis plan', brief:'Pre-specify the tests for each objective. Write it before you see any data.', prompts:['Software named','How continuous and categorical data will be summarised','The test for each objective','Level of significance and adjustment for confounders'], placeholder:'Data will be analysed using…', example:'Data will be analysed in SPSS v27. Continuous variables will be summarised as mean (SD) or median (IQR), categorical as frequency and percentage. Prevalence will be reported with a 95% confidence interval. Prevalence between hostel residents and day-scholars will be compared using the chi-square test, and adjusted for sex and dietary pattern using binary logistic regression. p < 0.05 will be considered significant.'},
+  {num:'09', title:'Ethical considerations', brief:'Approval, consent, confidentiality, and what happens to participants you find to be ill.', prompts:['Institutional ethics committee approval before enrolment','Written informed consent, and assent where under 18','Confidentiality and data storage','Management of incidental findings'], placeholder:'The study will commence after…', example:'The study will commence only after approval by the Institutional Ethics Committee. Written informed consent will be obtained from every participant; for those under 18, guardian consent and participant assent will be taken on separate forms. Data will be coded and stored password-protected, accessible only to the investigators. Students found to be anaemic will be counselled and referred to the medicine outpatient department for treatment at no cost to them.'},
+  {num:'10', title:'Participant information sheet & consent', brief:'The annexure your committee reads most closely. Built on the ICMR / ICH-GCP requirements.', prompts:['Purpose, and a statement that this is research','Procedures, time required and total duration','Foreseeable risks, discomforts and how they are minimised','Benefits — or a clear statement that there are none','Costs, and any reimbursement for time or travel','Confidentiality, and who may see the records','Voluntary participation and the right to withdraw without penalty','Named contacts for the investigator and the ethics committee','Version number, date and page number in the footer','A translated copy in the local language'], placeholder:'You are invited to participate in a study…', example:'You are invited to take part in a study on anaemia among first-year students. Taking part means answering a short questionnaire and giving about 3 mL of blood from a vein in your arm, once, taking around 15 minutes in total. You may feel brief pain or bruising at the site. There is no direct benefit to you, though if you are found to be anaemic you will be counselled and referred for free treatment. There is no cost to you. Your name will not appear in any record or publication; your data will be identified only by a code. Participation is entirely voluntary, refusal will not affect your academic assessment in any way, and you may withdraw at any time. For questions contact the investigator or the Institutional Ethics Committee at the numbers below.'}
+];
+
+const DIAGRAMS = [
+  { title:'When exposure and outcome are measured', intro:'Tap a design to see how the timeline changes.',
+    chips:['Cross-sectional','Cohort','Case-control'],
+    views:[
+      {boxes:[{text:'One time point', sub:'exposure + outcome together'}], caption:'Everything measured at once. You can report prevalence and association — not incidence, not cause.'},
+      {boxes:[{text:'Exposure', sub:'now'},{text:'Follow-up', sub:'1 year'},{text:'Outcome', sub:'later', tone:'active'}], caption:'You start clean of outcome, wait, and see who develops it — the only one of the three that gives incidence and relative risk directly.'},
+      {boxes:[{text:'Outcome', sub:'cases & controls, now', tone:'active'},{text:'Look back', sub:'records / recall'},{text:'Exposure', sub:'in the past'}], caption:'You start from who already has the outcome and look backwards — efficient for rare outcomes, but risk is out of reach.'}
+    ]},
+  { title:'Filling the four PICO slots', intro:'Tap a slot to see what belongs in it, for your anaemia question.',
+    chips:['P','I/E','C','O'],
+    views:[
+      {boxes:[{text:'P', sub:'Population', tone:'active'},{text:'I/E'},{text:'C'},{text:'O'}], caption:'First-year MBBS students — as specific as your setting allows.'},
+      {boxes:[{text:'P'},{text:'I/E', sub:'Exposure', tone:'active'},{text:'C'},{text:'O'}], caption:'Hostel residence — the factor you think matters.'},
+      {boxes:[{text:'P'},{text:'I/E'},{text:'C', sub:'Comparator', tone:'active'},{text:'O'}], caption:'Day-scholars — optional; drop it for a purely descriptive study.'},
+      {boxes:[{text:'P'},{text:'I/E'},{text:'C'},{text:'O', sub:'Outcome', tone:'active'}], caption:'Prevalence of anaemia by WHO Hb cut-off — stated so it is measurable.'}
+    ]},
+  { title:'Reject or fail to reject?', intro:'Tap a decision to see what it implies for your Hb comparison.',
+    chips:['p = 0.04','p = 0.30'],
+    views:[
+      {boxes:[{text:'H0: means equal'},{text:'p = 0.04 < 0.05'},{text:'Reject H0', tone:'active'}], caption:'Data this extreme would occur only 4% of the time if H0 were true — conventionally enough to reject it, provided the effect size is meaningful.'},
+      {boxes:[{text:'H0: means equal'},{text:'p = 0.30 > 0.05'},{text:'Fail to reject H0'}], caption:'Not significant does not mean equal — it means this study, at this size, could not tell the difference from chance.'}
+    ]},
+  { title:'How the 152 get picked from 250', intro:'Tap a method to see the selection rule.',
+    chips:['Simple random','Systematic','Stratified'],
+    views:[
+      {boxes:[{text:'Roll list', sub:'250 names'},{text:'Random numbers', sub:'152 drawn'},{text:'Sample', sub:'152 students', tone:'active'}], caption:'Every student has an equal, independent chance of selection — generate 152 random numbers from 1–250.'},
+      {boxes:[{text:'Roll list', sub:'250 names, ordered'},{text:'Every kth name', sub:'k ≈ 1.6 → every 2nd'},{text:'Sample', sub:'152 students', tone:'active'}], caption:'Cheap and even, but risky if the list order hides a pattern — check it doesn\u2019t correlate with hostel status.'},
+      {boxes:[{text:'Hostellers 140 / Day 110', sub:'strata'},{text:'Fixed share each', sub:'84 + 68'},{text:'Sample', sub:'152 students', tone:'active'}], caption:'Guarantees both groups are well represented in the exact ratio you choose — best when a subgroup comparison is your main objective.'}
+    ]},
+  { title:'Adjusting away the sex effect', intro:'Tap to compare the raw and adjusted picture.',
+    chips:['Unadjusted','Adjusted for sex'],
+    views:[
+      {boxes:[{text:'Hostel residence'},{text:'Anaemia', tone:'active'}], caption:'Raw comparison: hostellers look twice as likely to be anaemic — but 70% of them are female, and sex alone affects Hb.'},
+      {boxes:[{text:'Hostel residence'},{text:'Sex (confounder)', tone:'active'},{text:'Anaemia'}], caption:'Stratifying or adjusting for sex shows how much of the raw gap survives once sex is accounted for — often a smaller, more honest effect.'}
+    ]},
+  { title:'Same table, three answers', intro:'Tap a measure to see how it reads your 40/100 vs 20/100 table.',
+    chips:['Risk ratio','Odds ratio','Risk difference'],
+    views:[
+      {boxes:[{text:'Risk hostellers', sub:'0.40'},{text:'Risk day-scholars', sub:'0.20'},{text:'RR = 2.0', tone:'active'}], caption:'Hostellers have twice the risk of day-scholars.'},
+      {boxes:[{text:'Odds hostellers', sub:'40:60'},{text:'Odds day-scholars', sub:'20:80'},{text:'OR = 2.67', tone:'active'}], caption:'Runs higher than RR here because anaemia is a common outcome, not a rare one.'},
+      {boxes:[{text:'Risk hostellers', sub:'40%'},{text:'Risk day-scholars', sub:'20%'},{text:'RD = 20 pp', tone:'active'}], caption:'20 more cases per 100 hostellers — the number a warden or dean will actually act on.'}
+    ]},
+  { title:'Why PPV moves and sensitivity doesn\u2019t', intro:'Tap a prevalence setting to see how a positive result holds up.',
+    chips:['High prevalence (40%)','Low prevalence (8%)'],
+    views:[
+      {boxes:[{text:'Meter positive'},{text:'True case?', tone:'active'},{text:'PPV ≈ high'}], caption:'In a high-burden screening camp, most positives really are anaemic — the test is trustworthy at the point of care.'},
+      {boxes:[{text:'Meter positive'},{text:'True case?', tone:'active'},{text:'PPV ≈ low'}], caption:'Same meter, same sensitivity and specificity — but in a low-burden clinic, most positives are false alarms.'}
+    ]},
+  { title:'What concealment actually protects', intro:'Tap to compare a concealed and an open allocation list.',
+    chips:['Concealed','Not concealed'],
+    views:[
+      {boxes:[{text:'Random list', sub:'sealed envelopes'},{text:'Recruiter', sub:'cannot see ahead'},{text:'Enrolled arm', tone:'active'}], caption:'The next assignment is genuinely unknown at recruitment — allocation cannot be steered.'},
+      {boxes:[{text:'Random list', sub:'open on a sheet'},{text:'Recruiter', sub:'can see ahead', tone:'active'},{text:'Enrolled arm'}], caption:'Even a perfectly random sequence is compromised once the recruiter can see what\u2019s coming next.'}
+    ]},
+  { title:'Three questions, one test', intro:'Tap a data pattern to see the test it points to.',
+    chips:['Continuous, 2 groups','Categorical, 2×2','Paired, before/after'],
+    views:[
+      {boxes:[{text:'Hb (continuous)'},{text:'2 independent groups'},{text:'Unpaired t-test', tone:'active'}], caption:'Hostellers vs day-scholars, roughly normal Hb — the independent-samples t-test.'},
+      {boxes:[{text:'Anaemia (yes/no)'},{text:'2 independent groups'},{text:'Chi-square test', tone:'active'}], caption:'Two categorical variables in a 2×2 table — chi-square, or Fisher exact if any expected cell is under 5.'},
+      {boxes:[{text:'Hb (continuous)'},{text:'Same students, twice'},{text:'Paired t-test', tone:'active'}], caption:'Before and after iron therapy in the same 40 students — the paired t-test, not the independent version.'}
+    ]},
+  { title:'Who signs what', intro:'Tap an age group to see the paperwork it needs.',
+    chips:['Adult (18+)','Minor (7\u201317)'],
+    views:[
+      {boxes:[{text:'Information sheet'},{text:'Consent form', tone:'active'},{text:'Enrolled'}], caption:'One consent form, signed by the participant themselves, after time to read and ask questions.'},
+      {boxes:[{text:'Information sheet'},{text:'Guardian consent', tone:'active'},{text:'Participant assent', tone:'active'}], caption:'Two documents: full consent from the parent or guardian, plus a simpler assent form the minor signs themselves.'}
+    ]},
+  { title:'Future tense vs past tense', intro:'Tap to see how the same section changes register.',
+    chips:['Protocol (before)','Paper (after)'],
+    views:[
+      {boxes:[{text:'Objective'},{text:'Analysis plan', tone:'active'},{text:'"will be used"'}], caption:'The protocol commits to a test before you have seen any data — that is what makes the eventual p-value credible.'},
+      {boxes:[{text:'Objective'},{text:'Results', tone:'active'},{text:'"was found"'}], caption:'The paper reports what happened, in past tense, against the plan the protocol already locked in.'}
+    ]},
+  { title:'Narrow vs broad search string', intro:'Tap a search strategy to see the trade-off.',
+    chips:['Narrow','Broad'],
+    views:[
+      {boxes:[{text:'"Anaemia" AND "MBBS"'},{text:'Fewer synonyms'},{text:'~5 hits', tone:'active'}], caption:'Precise, but likely to miss papers that used "iron deficiency" or "medical students" instead.'},
+      {boxes:[{text:'(Anaemia OR iron deficiency)'},{text:'AND (student* OR undergraduate)'},{text:'~40 hits', tone:'active'}], caption:'Wider net with OR inside each concept, AND between concepts — screen titles afterward to cut the noise.'}
+    ]}
+];
+
+const ICONS = {
+  learn:'M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20',
+  calc:'M8 6h8M8 10h3M13 10h3M8 14h3M13 14h3M8 18h8',
+  design:'M6 3v12M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 9v3a4 4 0 0 1-4 4H6',
+  proto:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M9 13h6M9 17h4'
+};
+
+class Component extends DCLogic {
+  state = {
+    screen:'onboard', role:1, mod:0, card:0, quiz:{}, done:{}, xp:0, streak:4,
+    calcType:'prop1', vals:{...DEFAULTS}, step:0, dropout:false, finite:false, copied:false,
+    wiz:{}, drafts:{}, openSec:null, showEx:false, exported:false, diagSel:{}
+  };
+
+  z(pct){ return {90:1.645, 95:1.96, 99:2.576}[Math.round(pct)] || 1.96; }
+  zb(pct){ return {80:0.8416, 90:1.2816, 95:1.6449}[Math.round(pct)] || 0.8416; }
+  v(k){ const x = this.state.vals[k]; return x === '' || x === undefined || isNaN(x) ? DEFAULTS[k] : Number(x); }
+
+  compute(){
+    const t = this.state.calcType, z = this.z(this.v('alpha')), zb = this.zb(this.v('power'));
+    let n = 0, per = false, unit = 'participants', breakdown = [], formula = '', para = '', src = 'your assumption';
+    if (t === 'prop1'){
+      const p = this.v('p')/100, d = this.v('d')/100;
+      n = z*z*p*(1-p)/(d*d);
+      formula = 'n = Z²·p(1−p) / d²   ·   Z = ' + z + ', p = ' + this.v('p') + '%, d = ' + this.v('d') + '%';
+      src = 'the expected prevalence of ' + this.v('p') + '%';
+      para = 'Assuming an expected prevalence of ' + this.v('p') + '% (cite your source), with ' + this.v('alpha') + '% confidence and an absolute precision of ±' + this.v('d') + '%, the sample size calculated by n = Z²p(1−p)/d² is N_RAW.';
+    } else if (t === 'prop2'){
+      const p1 = this.v('p1')/100, p2 = this.v('p2')/100, pb = (p1+p2)/2;
+      const num = z*Math.sqrt(2*pb*(1-pb)) + zb*Math.sqrt(p1*(1-p1)+p2*(1-p2));
+      n = num*num/Math.pow(p1-p2, 2); per = true;
+      formula = 'n = [Zα/2·√(2p̄q̄) + Zβ·√(p₁q₁+p₂q₂)]² / (p₁−p₂)²';
+      src = 'the proportions ' + this.v('p1') + '% and ' + this.v('p2') + '%';
+      para = 'To detect a difference between proportions of ' + this.v('p1') + '% and ' + this.v('p2') + '% (cite your source) with ' + this.v('alpha') + '% two-sided confidence and ' + this.v('power') + '% power, N_RAW participants per group (N_TOTAL in total) are required.';
+    } else if (t === 'mean1'){
+      const sd = this.v('sd'), d = this.v('d');
+      n = Math.pow(z*sd/d, 2);
+      formula = 'n = Z²·σ² / d²   ·   Z = ' + z + ', σ = ' + sd + ', d = ' + d;
+      src = 'the standard deviation of ' + sd;
+      para = 'Assuming a standard deviation of ' + sd + ' units (cite your source), with ' + this.v('alpha') + '% confidence and an absolute precision of ±' + d + ' units, the sample size by n = Z²σ²/d² is N_RAW.';
+    } else if (t === 'mean2'){
+      const sd = this.v('sd'), dl = this.v('delta');
+      n = 2*Math.pow((z+zb)*sd/dl, 2); per = true;
+      formula = 'n per group = 2σ²(Zα/2 + Zβ)² / Δ²';
+      src = 'the SD of ' + sd + ' and the difference of ' + dl;
+      const u = n2 => Math.abs(Number(n2)) === 1 ? ' unit' : ' units';
+      para = 'To detect a mean difference of ' + dl + u(dl) + ' with a common standard deviation of ' + sd + u(sd) + ' (cite your source), at ' + this.v('alpha') + '% two-sided confidence and ' + this.v('power') + '% power, N_RAW participants per group (N_TOTAL in total) are required.';
+    } else if (t === 'corr'){
+      const r = Math.min(Math.abs(this.v('r')), 0.95), C = 0.5*Math.log((1+r)/(1-r));
+      n = Math.pow((z+zb)/C, 2) + 3;
+      formula = "n = [(Zα/2 + Zβ) / C]² + 3,  C = ½·ln[(1+r)/(1−r)]";
+      src = 'the expected correlation of ' + this.v('r');
+      para = 'To detect a correlation coefficient of ' + this.v('r') + ' (cite your source) with ' + this.v('alpha') + '% two-sided confidence and ' + this.v('power') + '% power, using Fisher\u2019s z transformation, N_RAW participants are required.';
+    } else if (t === 'diag'){
+      const sn = this.v('sn')/100, d = this.v('d')/100, prev = this.v('prev')/100;
+      n = z*z*sn*(1-sn)/(d*d);
+      breakdown.push({label:'Diseased participants needed', value:String(Math.ceil(n))});
+      breakdown.push({label:'Total to screen at ' + this.v('prev') + '% prevalence', value:String(Math.ceil(Math.ceil(n)/prev))});
+      formula = 'n = Z²·Sn(1−Sn) / d²   then screened = n / prevalence';
+      src = 'the expected sensitivity of ' + this.v('sn') + '%';
+      para = 'Assuming an expected sensitivity of ' + this.v('sn') + '% (cite your source), ' + this.v('alpha') + '% confidence and an absolute precision of ±' + this.v('d') + '%, N_RAW participants with the condition are required by n = Z²·Sn(1−Sn)/d². At an expected prevalence of ' + this.v('prev') + '%, approximately SCREEN participants will need to be screened against the reference standard.';
+    } else if (t === 'cc'){
+      const p0 = this.v('p0')/100, or = this.v('or'), k = Math.max(this.v('k'), 1);
+      const p1 = (or*p0)/(1 + p0*(or-1)), pb = (p1 + k*p0)/(1+k);
+      const num = z*Math.sqrt((1+1/k)*pb*(1-pb)) + zb*Math.sqrt(p1*(1-p1) + p0*(1-p0)/k);
+      n = num*num/Math.pow(p1-p0, 2);
+      breakdown.push({label:'Cases', value:String(Math.ceil(n))});
+      breakdown.push({label:'Controls (' + k + ':1)', value:String(Math.ceil(n*k))});
+      breakdown.push({label:'Exposure in cases implied by OR', value:(p1*100).toFixed(1) + '%'});
+      unit = 'cases';
+      formula = 'p₁ = OR·p₀ / [1 + p₀(OR−1)];  n_cases = [Zα/2·√((1+1/k)p̄q̄) + Zβ·√(p₁q₁ + p₀q₀/k)]² / (p₁−p₀)²';
+      src = 'the odds ratio of ' + or + ' and control exposure of ' + this.v('p0') + '%';
+      para = 'To detect an odds ratio of ' + or + ' with an exposure prevalence of ' + this.v('p0') + '% among controls (cite your source), at ' + this.v('alpha') + '% two-sided confidence, ' + this.v('power') + '% power and ' + k + ' control(s) per case, N_RAW cases and ' + '' + ' controls are required.';
+    }
+    const raw = Math.ceil(n);
+    let out = raw, notes = [];
+    if (this.state.finite){
+      const N = this.v('N');
+      out = Math.ceil(out/(1 + (out-1)/N));
+      notes.push('corrected for a finite population of ' + N);
+      breakdown.push({label:'After finite population correction', value:String(out)});
+    }
+    if (this.state.dropout){
+      const dr = this.v('dropout')/100;
+      out = Math.ceil(out/(1-dr));
+      notes.push('inflated for ' + this.v('dropout') + '% anticipated non-response');
+      breakdown.push({label:'After ' + this.v('dropout') + '% dropout allowance', value:String(out)});
+    }
+    const total = per ? out*2 : (this.state.calcType === 'cc' ? out + Math.ceil(out*Math.max(this.v('k'),1)) : out);
+    let paragraph = para.replace('N_RAW', String(raw)).replace('N_TOTAL', String(per ? raw*2 : raw));
+    if (this.state.calcType === 'diag') paragraph = paragraph.replace('SCREEN', String(Math.ceil(raw/(this.v('prev')/100))));
+    if (this.state.calcType === 'cc') paragraph = paragraph.replace('and  controls', 'and ' + Math.ceil(raw*Math.max(this.v('k'),1)) + ' controls');
+    if (notes.length) paragraph += ' This figure was ' + notes.join(' and ') + ', giving a final sample of ' + out + (per ? ' per group' : (this.state.calcType === 'cc' ? ' cases' : '')) + '.';
+    return {
+      n:String(out), total,
+      unitLine: per ? 'per group\n' + total + ' in total' : (this.state.calcType === 'cc' ? 'cases, plus ' + Math.ceil(out*Math.max(this.v('k'),1)) + ' controls' : unit),
+      breakdown, hasBreakdown:breakdown.length > 0, formula, paragraph, assumeSource:src
+    };
+  }
+
+  verdictFor(w){
+    const [a,b,c,d] = [w[0],w[1],w[2],w[3]];
+    if (a === 0) return {
+      name: d === 1 ? 'Randomised controlled trial' : 'Randomised trial with a single follow-up',
+      why:'You allocate the exposure, so you can make a causal claim — the strongest design available to you, and the one with the heaviest ethics and registration burden.',
+      points:[{tag:'Can',text:'Support a causal statement about the intervention'},{tag:'Can',text:'Balance confounders you never thought to measure'},{tag:'Cannot',text:'Be started before ethics approval and trial registration'},{tag:'Needs',text:'A concealed allocation sequence and a pre-specified primary outcome'}],
+      confused:'a non-randomised "comparative interventional study" — if allocation was by alternation, date or convenience, it is quasi-experimental and must be called that.'};
+    if (b === 0) return {
+      name:'Cross-sectional study',
+      why:'Exposure and outcome measured together, once. The realistic choice for a first project in a short posting — and the honest limit is that you cannot order cause and effect.',
+      points:[{tag:'Can',text:'Report prevalence with a confidence interval'},{tag:'Can',text:'Report associations between exposure and outcome'},{tag:'Cannot',text:'Report incidence, or establish which came first'},{tag:'Needs',text:'A defined sampling frame and a stated response rate'}],
+      confused:'a case-control study — if you deliberately recruited a fixed number of people with the outcome, you sampled on outcome and it is case-control, not cross-sectional.'};
+    if (b === 2 || c === 1) return {
+      name:'Case-control study',
+      why:'Starting from the outcome and looking back is efficient when the outcome is rare — you get an adequate number of cases without following thousands of people.',
+      points:[{tag:'Can',text:'Study a rare outcome efficiently, reporting an odds ratio'},{tag:'Can',text:'Examine several exposures at once'},{tag:'Cannot',text:'Report risk, prevalence or incidence'},{tag:'Needs',text:'Controls from the same source population, and a pre-stated definition of a case'}],
+      confused:'a retrospective cohort — that starts from exposure in old records and follows forward, and it can report risk.'};
+    return {
+      name: d === 0 ? 'Retrospective cohort study' : 'Prospective cohort study',
+      why:'Exposure first, outcome later, so temporality is on your side. ' + (d === 0 ? 'Using existing records keeps it feasible in a short posting, at the cost of controlling how well the exposure was recorded.' : 'It costs time and follow-up effort, and loss to follow-up is your main threat.'),
+      points:[{tag:'Can',text:'Report incidence, relative risk and temporal sequence'},{tag:'Can',text:'Study several outcomes of one exposure'},{tag:'Cannot',text:'Escape confounding without measuring and adjusting for it'},{tag:'Needs',text:'A plan for loss to follow-up' + (d === 0 ? ', and an honest account of what the records omit' : '')}],
+      confused:'a cross-sectional study — if you measured exposure and outcome at the same visit, however retrospectively you asked about exposure, it is cross-sectional.'};
+  }
+
+  set(k, e){
+    const raw = e.target.value;
+    this.setState(s => ({vals:{...s.vals, [k]:raw === '' ? '' : Number(raw)}, copied:false}));
+  }
+
+  renderVals(){
+    const st = this.state, S = st.screen;
+    const showGame = (this.props.showGamification ?? true);
+    const homeLayout = this.props.homeLayout ?? 'index';
+    const lessonFormat = this.props.lessonFormat ?? 'cards';
+    const calcMode = this.props.calcMode ?? 'stepper';
+    const go = sc => () => this.setState({screen:sc, copied:false, openSec:null});
+
+    const openMod = i => () => this.setState({screen:'module', mod:i, card:0});
+    const mods = MODULES.map((m, i) => {
+      const done = !!st.done[i];
+      return {...m, cardCount:m.cards.length, open:openMod(i),
+        titleColor: done ? N600 : INK,
+        stateLabel: done ? 'Done' : (i === st.mod && S === 'module' ? 'Open' : 'Start'),
+        stateColor: done ? A700 : N500,
+        tick: done ? '✓' : '',
+        barFill: done ? A : 'transparent',
+        cellBg: done ? A100 : 'var(--color-bg)',
+        cellNum: done ? A700 : N500};
+    });
+    const doneCount = Object.keys(st.done).filter(k => st.done[k]).length;
+    const nextIdx = mods.findIndex((m, i) => !st.done[i]);
+    const nx = MODULES[nextIdx < 0 ? 0 : nextIdx];
+    const trackNames = ['Foundations','Inference','Measurement','Trials','Writing'];
+    const trackBlurb = {Foundations:'What kind of study you are actually running.', Inference:'What your numbers are allowed to say.', Measurement:'Getting the measuring and the testing right.', Trials:'When you assign the exposure — and the ethics that follow.', Writing:'Turning decisions into a submittable document.'};
+    const tracks = trackNames.map(name => {
+      const items = mods.filter(m => m.track === name);
+      const d = items.filter((m, ) => st.done[MODULES.indexOf(MODULES.find(x => x.num === m.num))]).length;
+      return {name, blurb:trackBlurb[name], progress:d + '/' + items.length, items};
+    });
+
+    const mod = MODULES[st.mod];
+    const cards = mod.cards.map((c, i) => {
+      const picked = st.quiz[st.mod + ':' + i];
+      const answered = picked !== undefined;
+      return {...c,
+        hasNote: !!c.note, hasQuiz: !!c.quizQ, isDiagram:false, answered,
+        options:(c.options || []).map((text, oi) => {
+          const right = oi === c.answer, sel = picked === oi;
+          return {text, letter:String.fromCharCode(65+oi),
+            pick:() => this.setState(s => ({quiz:{...s.quiz, [st.mod + ':' + i]:oi}, xp: s.quiz[st.mod + ':' + i] === undefined && oi === c.answer ? s.xp + 20 : s.xp})),
+            border: answered && right ? A : (sel ? INK : N300),
+            bg: answered && right ? A100 : (sel ? N100 : '#fff'),
+            color: answered && sel && !right ? N600 : INK,
+            mark: answered ? (right ? '✓' : (sel ? '✕' : '')) : ''};
+        })};
+    });
+    const dg = DIAGRAMS[st.mod];
+    const dsel = st.diagSel[st.mod] || 0;
+    const dview = dg.views[dsel];
+    const toneStyle = tone => tone === 'active' ? {bg:A, border:A, color:'#fff'} : {bg:N100, border:INK, color:INK};
+    cards.splice(Math.max(cards.length - 1, 0), 0, {
+      kicker:'Try it', title:dg.title, body:dg.intro, hasNote:false, hasQuiz:false, isDiagram:true, answered:false, options:[],
+      chips: dg.chips.map((label, ci) => ({label,
+        pick:() => this.setState(s => ({diagSel:{...s.diagSel, [st.mod]:ci}})),
+        border: dsel === ci ? INK : N300, bg: dsel === ci ? INK : 'transparent', color: dsel === ci ? '#fff' : INK})),
+      boxes: dview.boxes.map((b, bi) => { const ts = toneStyle(b.tone); return {text:b.text, sub:b.sub || '', showArrow: bi < dview.boxes.length - 1, bg:ts.bg, border:ts.border, color:ts.color}; }),
+      caption: dview.caption
+    });
+    cards.forEach((c, i) => { c.pos = (i+1) + ' / ' + cards.length; c.tickFill = i <= st.card ? A : N300; });
+    const last = st.card >= cards.length - 1;
+    const finish = () => this.setState(s => ({done:{...s.done, [s.mod]:true}, xp:s.xp + (s.done[s.mod] ? 0 : 60), screen:'home'}));
+
+    const fields = FIELDS[st.calcType].map((f, i) => ({
+      ...f, value:st.vals[f.k] === '' ? '' : this.v(f.k), set:e => this.set(f.k, e),
+      tickFill: i <= st.step ? A : N300,
+      presets:(f.presets || []).map(p => ({label:String(p) + (f.unit === '%' ? '%' : ''),
+        pick:() => this.setState(s => ({vals:{...s.vals, [f.k]:p}, copied:false})),
+        bg: this.v(f.k) === p ? INK : 'transparent', color: this.v(f.k) === p ? '#fff' : INK}))
+    }));
+    const step = Math.min(st.step, fields.length - 1);
+    const adjust = [];
+    if (st.dropout) adjust.push({label:'Anticipated dropout / non-response', unit:'%', value:st.vals.dropout === '' ? '' : this.v('dropout'), set:e => this.set('dropout', e)});
+    if (st.finite) adjust.push({label:'Total population size', unit:'', value:st.vals.N === '' ? '' : this.v('N'), set:e => this.set('N', e)});
+    const result = this.compute();
+
+    const wizQs = WIZARD.map((q, i) => ({...q, opacity: i === 0 || st.wiz[i-1] !== undefined ? 1 : 0.42,
+      options:q.options.map((text, oi) => {
+        const sel = st.wiz[i] === oi;
+        return {text, pick:() => this.setState(s => ({wiz:{...s.wiz, [i]:oi}})),
+          border: sel ? INK : N300, bg: sel ? A100 : '#fff', color:INK, dot: sel ? A : 'transparent'};
+      })}));
+    const wizardDone = [0,1,2,3].every(i => st.wiz[i] !== undefined);
+    const verdict = wizardDone ? {...this.verdictFor(st.wiz), goCalc:go('calc')} : {points:[]};
+
+    const secs = SECTIONS.map((s, i) => {
+      const txt = st.drafts[i] || '';
+      return {...s, preview: txt ? txt.slice(0, 68) + (txt.length > 68 ? '…' : '') : s.brief,
+        tick: txt.trim().length > 40 ? '✓' : '', stateColor: txt.trim().length > 40 ? A700 : N500,
+        barFill: txt.trim().length > 40 ? A : 'transparent',
+        open:() => this.setState({openSec:i, showEx:false})};
+    });
+    const oi = st.openSec;
+    const openText = oi !== null ? (st.drafts[oi] || '') : '';
+    const words = Object.values(st.drafts).join(' ').trim().split(/\s+/).filter(Boolean).length;
+    const secDone = secs.filter(s => s.tick).length;
+
+    const tabDefs = [['home','Learn','learn'],['calc','Calculate','calc'],['wizard','Design','design'],['protocol','Protocol','proto']];
+    const activeTab = S === 'module' ? 'home' : S;
+    const tabs = tabDefs.map(([id, label, ic]) => {
+      const on = activeTab === id;
+      return {label, pick:go(id), bg: on ? INK : 'var(--color-bg)', color: on ? '#fff' : N600,
+        icon:React.createElement('svg', {width:20, height:20, viewBox:'0 0 24 24', fill:'none', stroke:'currentColor', strokeWidth:2, strokeLinecap:'round', strokeLinejoin:'round'}, React.createElement('path', {d:ICONS[ic]}))};
+    });
+
+    const heads = {home:['Your syllabus','Modules'], module:[mod.kicker, 'Module ' + mod.num], calc:['Tools','Sample size'], wizard:['Tools','Which design?'], protocol:['Draft','My protocol']};
+    const h = heads[S] || heads.home;
+
+    return {
+      isOnboard:S === 'onboard', notOnboard:S !== 'onboard',
+      isHome:S === 'home', isModule:S === 'module', isCalc:S === 'calc', isWizard:S === 'wizard', isProtocol:S === 'protocol',
+      headerKicker:h[0], headerTitle: S === 'module' ? mod.title : h[1],
+      showGame, streak:st.streak, xp:st.xp,
+      roles:['MBBS undergraduate, first project','Intern or junior resident','Nursing or paramedical staff','PG resident writing a thesis'].map((label, i) => ({
+        label, note:['Start at Module 01 — nothing assumed','Concepts plus the protocol builder','Practical measurement and consent first','Straight to sample size and the protocol'][i],
+        fill: st.role === i ? A : 'transparent', dot: st.role === i ? A : 'transparent',
+        pick:() => this.setState({role:i})})),
+      start:() => this.setState({screen:'module', mod:0, card:0}),
+      modules:mods, tracks, doneCount, level:Math.floor(st.xp/100) + 1,
+      levelName:['Getting oriented','Reading critically','Designing','Ready to submit'][Math.min(Math.floor(st.xp/200), 3)],
+      gameLine: doneCount === 0 ? 'Finish one module today to keep the streak. Each module is ' + '60 XP, each right answer 20.' : doneCount + ' done, ' + (12-doneCount) + ' to go — ' + (100 - st.xp%100) + ' XP to the next level.',
+      homeIsIndex:homeLayout === 'index', homeIsGrid:homeLayout === 'grid', homeIsTrack:homeLayout === 'track',
+      openNext:openMod(nextIdx < 0 ? 0 : nextIdx), nextNum:nx.num, nextTitle:nx.title,
+      nextMeta:nx.cards.length + ' cards · ' + nx.mins + ' min · ' + nx.kicker,
+      cards, caseText:mod.caseText,
+      lessonIsCards:lessonFormat === 'cards', lessonIsRead:lessonFormat === 'read',
+      trackShift:'translateX(-' + (st.card*100) + '%)',
+      prevColor: st.card === 0 ? N300 : INK,
+      nextLabel: last ? 'Finish module' : 'Next card',
+      prevCard:() => this.setState(s => ({card:Math.max(0, s.card-1)})),
+      nextCard:() => last ? finish() : this.setState(s => ({card:s.card+1})),
+      finishModule:finish, backHome:go('home'),
+      calcTypes:CALC_TYPES.map(t => ({...t, pick:() => this.setState(s => ({calcType:t.id, step:0, copied:false, vals:{...s.vals, ...TYPE_DEFAULTS[t.id]}})),
+        bg: st.calcType === t.id ? INK : 'var(--color-bg)', color: st.calcType === t.id ? '#fff' : INK})),
+      calcIsStepper:calcMode === 'stepper', calcIsForm:calcMode === 'form',
+      fields, stepField:fields[step], stepPos:(step+1) + ' of ' + fields.length,
+      prevStep:() => this.setState(s => ({step:Math.max(0, s.step-1)})),
+      nextStep:() => this.setState(s => ({step:Math.min(fields.length-1, s.step+1)})),
+      prevStepColor: step === 0 ? N300 : INK,
+      nextStepLabel: step >= fields.length-1 ? 'See the number' : 'Next input',
+      toggleDropout:() => this.setState(s => ({dropout:!s.dropout, copied:false})),
+      toggleFinite:() => this.setState(s => ({finite:!s.finite, copied:false})),
+      dropBorder: st.dropout ? INK : N300, dropBg: st.dropout ? A100 : '#fff', dropColor:INK,
+      dropState: st.dropout ? 'On · ' + this.v('dropout') + '%' : 'Off — tap to add',
+      finBorder: st.finite ? INK : N300, finBg: st.finite ? A100 : '#fff', finColor:INK,
+      finState: st.finite ? 'On · N = ' + this.v('N') : 'Off — tap to add',
+      anyAdjust:adjust.length > 0, adjustFields:adjust, result,
+      copyLabel: st.copied ? 'Copied to clipboard ✓' : 'Copy paragraph',
+      copyPara:() => { try { navigator.clipboard.writeText(result.paragraph); } catch(e){} this.setState({copied:true}); },
+      wizardQs:wizQs, wizardDone, verdict,
+      resetWizard:() => this.setState({wiz:{}}),
+      sections:secs, protoDone:secDone, protoTotal:SECTIONS.length, protoWords:words,
+      protoHint: secDone === 0 ? 'Start with the title — everything else gets easier once it is one sentence.' : (secDone < 10 ? 'Next up: ' + (secs.find(s => !s.tick) || {}).title + '.' : 'All sections drafted. Export and take it to your guide.'),
+      noSectionOpen: oi === null, sectionOpen: oi !== null,
+      openSection: oi === null ? {prompts:[]} : {...SECTIONS[oi], text:openText,
+        count: openText.trim() ? openText.trim().split(/\s+/).length + ' words' : 'Empty',
+        showExample:st.showEx,
+        prompts:SECTIONS[oi].prompts.map(text => ({text, fill: openText.trim().length > 40 ? A : 'transparent'}))},
+      setDraft:e => { const v = e.target.value; this.setState(s => ({drafts:{...s.drafts, [s.openSec]:v}})); },
+      useExample:() => this.setState(s => ({showEx:!s.showEx})),
+      pasteExample:() => this.setState(s => ({drafts:{...s.drafts, [s.openSec]:SECTIONS[s.openSec].example}, showEx:false})),
+      closeSection:() => this.setState({openSec:null, showEx:false}),
+      nextSection:() => this.setState(s => ({openSec:Math.min(SECTIONS.length-1, s.openSec+1), showEx:false})),
+      exportLabel: st.exported ? 'Synopsis prepared ✓' : 'Export synopsis draft',
+      exportProto:() => this.setState({exported:true}),
+      tabs
+    };
+  }
+}
+</script>
+</body>
+</html>

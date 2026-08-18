@@ -1,0 +1,17 @@
+{
+  "name": "Pocket Research",
+  "short_name": "Pocket Research",
+  "description": "Research design, one card at a time. Twelve concept modules, a sample size calculator, and a protocol you can actually submit.",
+  "start_url": "./Protocol.dc.html",
+  "id": "./Protocol.dc.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f2f2",
+  "theme_color": "#0088b0",
+  "icons": [
+    { "src": "app-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "app-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "app-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
