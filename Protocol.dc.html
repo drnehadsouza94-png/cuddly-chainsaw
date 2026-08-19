@@ -1121,7 +1121,19 @@ class Component extends DCLogic {
       closeSection:() => this.setState({openSec:null, showEx:false}),
       nextSection:() => this.setState(s => ({openSec:Math.min(SECTIONS.length-1, s.openSec+1), showEx:false})),
       exportLabel: st.exported ? 'Synopsis prepared ✓' : 'Export synopsis draft',
-      exportProto:() => this.setState({exported:true}),
+      exportProto:() => {
+        const lines = SECTIONS.map((s, i) => {
+          const txt = (st.drafts[i] || '').trim();
+          return s.num + '. ' + s.title + '\n\n' + (txt || '[not yet drafted]') + '\n';
+        });
+        const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'research-protocol-synopsis.txt';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        this.setState({exported:true});
+      },
       tabs
     };
   }
